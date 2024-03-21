@@ -1,0 +1,1 @@
+export const SHOP_KIM_API = 'https://shopkim.onrender.com'
