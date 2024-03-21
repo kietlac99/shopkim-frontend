@@ -51,6 +51,7 @@ const Payment = ({ history }) => {
     }, [dispatch, alert, error]);
 
     const orderInfo = JSON.parse(sessionStorage.getItem('orderInfo'));
+    const formattedTotalPrice = orderInfo?.totalPrice?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
 
     const paymentData = {
         amount: Math.round(orderInfo.totalPrice)
@@ -179,7 +180,7 @@ const Payment = ({ history }) => {
                     className="btn btn-block py-3"
                     disabled= {loading ? true : false}
                     >
-                        Thanh Toán {` - ${orderInfo && orderInfo.totalPrice}`}
+                        Thanh Toán {` - ${orderInfo && formattedTotalPrice}`}
                     </button>
         
                 </form>
