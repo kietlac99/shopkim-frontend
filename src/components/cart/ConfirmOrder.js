@@ -15,7 +15,7 @@ const ConfirmOrder = ({ history }) => {
     const itemsPrice = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)
     const shippingPrice = itemsPrice > 5000000 ? 0 : 50000;
     const taxPrice = Number((0.05 * itemsPrice).toFixed(2));
-    const totalPrice = (itemsPrice + shippingPrice +taxPrice).toFixed(2);
+    const totalPrice = Number((itemsPrice + shippingPrice +taxPrice).toFixed(2));
 
     const formattedVND = (amount) => {
         return amount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
