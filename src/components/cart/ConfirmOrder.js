@@ -100,8 +100,6 @@ const ConfirmOrder = ({ history }) => {
                         onClick={processToPayment}>Đến Phần Thanh Toán</button>
                     </div>
                 </div>
-			
-			
         </div>
 
     </Fragment>
