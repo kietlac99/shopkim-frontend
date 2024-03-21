@@ -17,10 +17,9 @@ const ConfirmOrder = ({ history }) => {
     const taxPrice = Number((0.05 * itemsPrice).toFixed(2));
     const totalPrice = (itemsPrice + shippingPrice +taxPrice).toFixed(2);
 
-    const formattedItemPrice = itemsPrice?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-    const formattedShippingPrice = shippingPrice?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-    const formattedTaxPrice = taxPrice?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-    const formattedTotalPrice = totalPrice?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+    const formattedVND = (amount) => {
+        return amount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+    };
 
     const processToPayment = () => {
         const data = {
@@ -69,7 +68,8 @@ const ConfirmOrder = ({ history }) => {
 
 
                                 <div className="col-4 col-lg-4 mt-4 mt-lg-0">
-                                    <p>{item.quantity} x {item.price} VNĐ = <b>{item.quantity * item.price} VNĐ</b></p>
+                                    <p>{item.quantity} x {formattedVND(item.price)} = <b>
+                                        {formattedVND(item.quantity * item.price)}</b></p>
                                 </div>
 
                             </div>
@@ -87,13 +87,13 @@ const ConfirmOrder = ({ history }) => {
                     <div id="order_summary">
                         <h4>Tổng Đơn Hàng</h4>
                         <hr />
-                        <p>Giá tiền:  <span className="order-summary-values">{formattedItemPrice} VNĐ</span></p>
-                        <p>Tiền giao hàng: <span className="order-summary-values">{formattedShippingPrice} VNĐ</span></p>
-                        <p>Tiền thuế:  <span className="order-summary-values">{formattedTaxPrice} VNĐ</span></p>
+                        <p>Giá tiền:  <span className="order-summary-values">{formattedVND(itemsPrice)}</span></p>
+                        <p>Tiền giao hàng: <span className="order-summary-values">{formattedVND(shippingPrice)} </span></p>
+                        <p>Tiền thuế:  <span className="order-summary-values">{formattedVND(taxPrice)}</span></p>
 
                         <hr />
 
-                        <p>Tổng tiền: <span className="order-summary-values">{formattedTotalPrice} VNĐ</span></p>
+                        <p>Tổng tiền: <span className="order-summary-values">{formattedVND(totalPrice)}</span></p>
 
                         <hr />
                         <button id="checkout_btn" className="btn btn-primary btn-block"
