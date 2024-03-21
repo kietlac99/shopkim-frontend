@@ -7,6 +7,8 @@ import MetaData from "../layout/MetaData";
 import { useDispatch, useSelector } from "react-redux";
 import { addItemToCartAction, removeItemFromCartAction } from '../../actions/cartActions';
 
+import { formattedVND } from '../../utils/formatedNumber';
+
 const Cart = ({ history }) => {
 
     const dispatch = useDispatch();
@@ -62,7 +64,7 @@ const Cart = ({ history }) => {
 
 
                                             <div className="col-4 col-lg-2 mt-4 mt-lg-0">
-                                                <p id="card_item_price">${item.price} VNĐ</p>
+                                                <p id="card_item_price">{formattedVND(item.price)}</p>
                                             </div>
 
                                             <div className="col-4 col-lg-3 mt-4 mt-lg-0">
@@ -100,7 +102,7 @@ const Cart = ({ history }) => {
                                     {cartItems.reduce((acc, item) => (acc + Number(item.quantity)), 0)} (Đơn Vị)
                                     </span></p>
                                 <p>Tổng tiền: <span className="order-summary-values">
-                                    {cartItems.reduce((acc, item) => (acc + item.quantity * item.price), 0).toFixed(2)} VNĐ
+                                    {formattedVND(Number(cartItems.reduce((acc, item) => (acc + item.quantity * item.price), 0).toFixed(2)))}
                                     </span></p>
                 
                                 <hr />

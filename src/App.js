@@ -53,15 +53,12 @@ import { SHOP_KIM_API } from './config';
 function App() {
 
   const [stripeApiKey, setStripeApiKey] = useState('');
+  const token = localStorage.getItem('userToken');
 
   useEffect(() => {
     store.dispatch(loadUserAction());
-
+    
     async function getStripeApiKey() {
-      const token = localStorage.getItem('userToken');
-
-      if (!token) return;
-
       const { data } = await axios({
         url: `${SHOP_KIM_API}/api/v1/payment/stripeapi`,
         method: 'GET',
@@ -72,9 +69,8 @@ function App() {
 
       setStripeApiKey(data.payload.stripeApiKey);
     }
-
-    getStripeApiKey();
-  }, []);
+    if (token) getStripeApiKey();
+  }, [token]);
 
   const { user, isAuthenticated, loading } = useSelector(state => state.auth);
 

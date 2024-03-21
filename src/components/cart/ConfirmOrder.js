@@ -53,7 +53,7 @@ const ConfirmOrder = ({ history }) => {
                 <h4 className="mt-4">Sản Phẩm Trong Đơn Hàng Của Bạn:</h4>
 
                 {cartItems.map(item => (
-                    <Fragment>
+                    <Fragment key={item.product}>
 
                         <hr />
                         <div className="cart-item my-1" key={item.product}>
