@@ -146,6 +146,9 @@ export const clearWardsAction = () => async (dispatch) => {
 }
 
 export const clearCartAction = () => (dispatch) => {
+    localStorage.removeItem('cartItems');
+    localStorage.removeItem('shippingInfo');
+
     dispatch({
         type: CLEAR_CART
     });
