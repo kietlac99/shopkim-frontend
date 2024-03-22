@@ -11,6 +11,8 @@ import { getProducts as getProductsAction } from "../actions/productActions";
 import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from 'react-redux';
 
+import { formattedVND } from '../utils/formatedNumber';
+
 const { createSliderWithTooltip } = Slider;
 const Range = createSliderWithTooltip(Slider.Range);
 
@@ -67,13 +69,13 @@ const Home = ({ match }) => {
                     <div className="px-5">
                       <Range
                         marks={{
-                          1: `1 VNĐ`,
-                          10000000: `10000000 VNĐ`
+                          1: `1`,
+                          10000000: `10.000.000`
                         }}
                         min={1}
                         max={10000000}
                         defaultValue={[1, 10000000]}
-                        tipFormatter={value => `${value}`}
+                        tipFormatter={value => `${formattedVND(value)}`}
                         tipProps={{
                           placement: "top",
                           visible: true
