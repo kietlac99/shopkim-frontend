@@ -2,7 +2,6 @@ import React, { Fragment, useState, useEffect } from 'react';
 import { MDBDataTable } from 'mdbreact';
 
 import MetaData from "../layout/MetaData";
-// import Loader from '../layout/Loader';
 import Sidebar from './Sidebar';
 
 import { useAlert } from "react-alert";
@@ -17,7 +16,7 @@ const ProductReviews = () => {
     const alert = useAlert();
     const dispatch = useDispatch();
 
-    const { /*loading,*/ error, reviews } = useSelector(state => state.productReviews);
+    const { error, reviews } = useSelector(state => state.productReviews);
     const { isDeleted } = useSelector(state => state.review);
 
     useEffect(() => {
@@ -27,16 +26,12 @@ const ProductReviews = () => {
             dispatch(clearErrors());
         }
 
-        if (productId !== '') {
-            dispatch(getProductReviewsAction(productId));
-        }
-
         if(isDeleted) {
             alert.success('Đánh giá xóa thành công!');
             dispatch({ type: DELETE_REVIEW_RESET });
         }
 
-    }, [dispatch, alert, error, productId, isDeleted]);
+    }, [dispatch, alert, error, isDeleted]);
 
     const deleteReviewHandler = (id) => {
         dispatch(deleteReviewAction(id, productId));
