@@ -10,6 +10,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getOrderDetailsAction, updateOrderAction, clearErrorsAction } from '../../actions/orderActions';
 import { UPDATE_ORDER_RESET } from '../../constants/orderConstants';
 
+import { formattedVND } from '../../utils/formatedNumber';
+
 const ProcessOrder = ({ match }) => {
 
     const [status, setStatus] = useState('');
@@ -70,7 +72,7 @@ const ProcessOrder = ({ match }) => {
                                 <p><b>Tên:</b> {user && user.name}</p>
                                 <p><b>Số Điện Thoại:</b> {shippingInfo && shippingInfo.phoneNo}</p>
                                 <p className="mb-4"><b>Địa chỉ:</b>{shippingDetails}</p>
-                                <p><b>Tổng Tiền:</b> {totalPrice} VNĐ</p>
+                                <p><b>Tổng Tiền:</b> {totalPrice && formattedVND(totalPrice)} VNĐ</p>
         
                                 <hr />
         
@@ -102,7 +104,7 @@ const ProcessOrder = ({ match }) => {
 
 
                                             <div className="col-4 col-lg-2 mt-4 mt-lg-0">
-                                                <p>{item.price} VNĐ</p>
+                                                <p>{formattedVND(item.price)}</p>
                                             </div>
 
                                             <div className="col-4 col-lg-3 mt-4 mt-lg-0">
@@ -125,8 +127,8 @@ const ProcessOrder = ({ match }) => {
                                         onChange={(e) => setStatus(e.target.value)}
                                     >
                                         <option value=''>Chọn Trạng Thái Đơn Hàng</option>
-                                        <option value="Processing">Processing</option>
-                                        <option value="Shipped">Shipped</option>
+                                        <option value="Đang xử lý">Đang xử lý</option>
+                                        <option value="Đang giao">Đang giao</option>
                                         <option value="Đã giao">Đã giao</option>
                                     </select>
                                 </div>
