@@ -56,20 +56,6 @@ function App() {
   const token = localStorage.getItem('userToken');
 
   useEffect(() => {
-    async function pingServer() {
-      try {
-        // Thực hiện yêu cầu ping đến server API
-        const response = await axios.get(`${SHOP_KIM_API}/ping`);
-        console.log('Ping thành công:', response.data);
-      } catch (error) {
-        console.error('Không thể ping server API:', error);
-      }
-    }
-    
-    pingServer(); // Gọi hàm pingServer khi component được render
-  }, []);
-
-  useEffect(() => {
     store.dispatch(loadUserAction());
     
     async function getStripeApiKey() {
