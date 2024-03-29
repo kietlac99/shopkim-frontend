@@ -237,7 +237,7 @@ const ProductDetails = ({ match }) => {
                       <div className="modal-content">
                         <div className="modal-header">
                           <h5 className="modal-title" id="ratingModalLabel">
-                            Xác nhận đánh giá
+                            Đánh giá
                           </h5>
                           <button
                             type="button"
