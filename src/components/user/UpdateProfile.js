@@ -100,6 +100,7 @@ const UpdateProfile = ({ history }) => {
                                 name='email'
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
+                                disabled='true'
                             />
                         </div>
 
