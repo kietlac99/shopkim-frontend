@@ -194,8 +194,8 @@ const ProductDetails = ({ match }) => {
                   }
                 >
                   {product.stock > 0
-                    ? "In Stock"
-                    : "Out of Stock"}
+                    ? "Còn hàng"
+                    : "Hết hàng"}
                 </span>
               </p>
 
