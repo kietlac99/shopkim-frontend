@@ -216,7 +216,7 @@ const ProductDetails = ({ match }) => {
                 data-target="#ratingModal"
                 onClick={setUserRatings}
               >
-                Xác nhận đánh giá của bạn
+                Đánh giá sản phẩm
               </button>
               :
                 <div className="alert alert-danger mt-5" type='alert'>Đăng nhập để đánh giá sản phẩm.</div>
