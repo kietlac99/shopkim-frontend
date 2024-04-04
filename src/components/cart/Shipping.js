@@ -93,7 +93,7 @@ const Shipping = ({ history }) => {
                                 onChange={handleProvinceChange}
                                 required
                             >
-                                <option value="">Chọn tỉnh thành</option>
+                                <option disabled="true" value="">Chọn tỉnh thành</option>
                                 {provinces.map((province) => (
                                     <option key={province} value={province}>
                                         {province}
@@ -111,7 +111,7 @@ const Shipping = ({ history }) => {
                                 onChange={handleDistrictChange}
                                 required
                             >
-                                <option value="">Chọn quận huyện</option>
+                                <option disabled="true" value="">Chọn quận huyện</option>
                                 {districts.map((district) => (
                                     <option key={district} value={district}>
                                         {district}
@@ -129,7 +129,7 @@ const Shipping = ({ history }) => {
                                 onChange={handleWardChange}
                                 required
                             >
-                                <option value="">Chọn phường xã</option>
+                                <option disabled="true" value="">Chọn phường xã</option>
                                 {wards.map((ward) => (
                                     <option key={ward} value={ward}>
                                         {ward}
