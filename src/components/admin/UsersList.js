@@ -18,6 +18,7 @@ const UsersList = ({ history }) => {
 
     const { loading, error, users = [] } = useSelector(state => state.allUsers);
     const { isDeleted } = useSelector(state => state.user);
+    const { user: admin } = useSelector(state => state.auth);
 
     useEffect(() => {
         dispatch(allUsersAction());
@@ -83,6 +84,7 @@ const UsersList = ({ history }) => {
                             <i className='fa fa-pencil'></i>
                         </Link>
                         <button className='btn-danger py-1 px-2 ml-2' 
+                        disabled = {admin._id === user._id ? true : false}
                         onClick={() => deleteUserHandler(user._id)}>
                             <i className='fa fa-trash'></i>
                         </button>
