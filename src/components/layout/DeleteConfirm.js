@@ -1,18 +1,22 @@
-import React from 'react'
+import React from 'react';
+import { Modal, Button } from 'react-bootstrap';
 
 const DeleteConfirm = ({ show, onClose, onConfirm }) => {
-    const deleteStyle = {
-        display: show ? 'block' : 'none'
-    };
-
   return (
-    <div className="delete" style={deleteStyle}>
-        <div className='delete-content'>
-            <p>Bạn có chắc muốn xóa?</p>
-            <button onClick={onConfirm}>Đồng ý</button>
-            <button onClick={onClose}>Hủy</button>
-        </div>
-    </div>
+    <Modal show={show} onHide={onClose}>
+        <Modal.Header closeButton>
+            <Modal.Title>Xác nhận xóa</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Bạn có chắc chắn muốn xóa đơn hàng này?</Modal.Body>
+        <Modal.Footer>
+            <Button varriant="secondary" onClick={onClose}>
+                Hủy
+            </Button>
+            <Button variant='primary' onClick={onConfirm}>
+                Đồng ý
+            </Button>
+        </Modal.Footer>
+    </Modal>
   );
 };
 
