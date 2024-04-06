@@ -132,6 +132,7 @@ const UsersList = ({ history }) => {
                         show={showConfirmation}
                         onClose={() => setShowConfirmation(false)}
                         onConfirm={confirmDeleteHandler}
+                        deleteType='người dùng'
                     />
                 </Fragment>
             </div>
