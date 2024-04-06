@@ -1,9 +1,10 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { MDBDataTable } from 'mdbreact';
 
 import MetaData from "../layout/MetaData";
 import Loader from '../layout/Loader';
+import DeleteConfirm from '../layout/DeleteConfirm';
 import Sidebar from './Sidebar';
 
 import { useAlert } from "react-alert";
@@ -19,6 +20,9 @@ const UsersList = ({ history }) => {
     const { loading, error, users = [] } = useSelector(state => state.allUsers);
     const { isDeleted } = useSelector(state => state.user);
     const { user: admin } = useSelector(state => state.auth);
+
+    const [showConfirmation, setShowConfirmation] = useState(false);
+    const [userIdToDelete, setUserIdToDelete] = useState(null);
 
     useEffect(() => {
         dispatch(allUsersAction());
@@ -37,8 +41,15 @@ const UsersList = ({ history }) => {
     }, [dispatch, alert, error, isDeleted, history]);
 
     const deleteUserHandler = (id) => {
-        dispatch(deleteUserAction(id));
+        setShowConfirmation(true);
+        setUserIdToDelete(id);
+        //dispatch(deleteUserAction(id));
     };
+
+    const confirmDeleteHandler = () => {
+        dispatch(deleteUserAction(userIdToDelete));
+        setShowConfirmation(false);
+    }
 
     const setUsers = () => {
         const data = {
@@ -116,6 +127,12 @@ const UsersList = ({ history }) => {
                             hover
                         />
                     )}
+
+                    <DeleteConfirm
+                        show={showConfirmation}
+                        onClose={() => setShowConfirmation(false)}
+                        onConfirm={confirmDeleteHandler}
+                    />
                 </Fragment>
             </div>
         </div>
