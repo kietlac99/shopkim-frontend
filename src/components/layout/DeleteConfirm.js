@@ -9,7 +9,7 @@ const DeleteConfirm = ({ show, onClose, onConfirm, deleteType }) => {
         </Modal.Header>
         <Modal.Body>Bạn có chắc chắn muốn xóa {deleteType} này?</Modal.Body>
         <Modal.Footer>
-            <Button varriant="secondary" onClick={onClose}>
+            <Button variant="secondary" onClick={onClose}>
                 Hủy
             </Button>
             <Button variant='primary' onClick={onConfirm}>
