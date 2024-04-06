@@ -76,9 +76,7 @@ const OrdersList = ({ history }) => {
                 id: order._id,
                 numOfItems: order.orderItems.length,
                 amount: formattedPrice,
-                status: order.orderStatus && String(order.orderStatus).includes('Đã giao')
-                        ? <p style={{ color: 'green' }}>{order.orderStatus}</p>
-                        : <p style={{ color: 'red' }}>{order.orderStatus}</p>,
+                status: order.orderStatus,
                 actions: 
                     <Fragment>
                         <Link to={`/admin/order/${order._id}`} className='btn btn-primary py-1 px-2'>
