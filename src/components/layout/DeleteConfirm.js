@@ -2,7 +2,7 @@ import React from 'react'
 
 const DeleteConfirm = ({ show, onClose, onConfirm }) => {
     const deleteStyle = {
-        display: show ? 'block' : none
+        display: show ? 'block' : 'none'
     };
 
   return (
