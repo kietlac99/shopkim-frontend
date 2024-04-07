@@ -5,6 +5,7 @@ import { MDBDataTable } from 'mdbreact';
 import MetaData from "../layout/MetaData";
 import Loader from '../layout/Loader';
 import Sidebar from './Sidebar';
+import DeleteConfirm from '../layout/DeleteConfirm';
 
 import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,6 +19,9 @@ const ProductsList = ({ history }) => {
 
     const { loading, error, products } = useSelector(state => state.products);
     const { error: deleteError, isDeleted } = useSelector(state => state.product);
+
+    const [showConfirmation, setShowConfirmation] = useState(false);
+    const [productIdToDelete, setProductIdToDelete] = useState(null);
 
     useEffect(() => {
         dispatch(getAdminProductsAction());
@@ -94,8 +98,15 @@ const ProductsList = ({ history }) => {
     };
 
     const deleteProductHandle = (id) => {
-        dispatch(deleteProductAction(id));
+        setShowConfirmation(true);
+        setProductIdToDelete(id);
+        //dispatch(deleteProductAction(id));
     };
+
+    const confirmDeleteHandler = () => {
+        dispatch(deleteProductAction(productIdToDelete));
+        setShowConfirmation(false);
+    }
 
   return (
     <Fragment>
@@ -118,6 +129,13 @@ const ProductsList = ({ history }) => {
                             hover
                         />
                     )}
+
+                    <DeleteConfirm
+                        show={showConfirmation}
+                        onClose={() => setShowConfirmation(false)}
+                        onConfirm={confirmDeleteHandler}
+                        deleteType='sản phẩm'
+                    />
                 </Fragment>
             </div>
         </div>
