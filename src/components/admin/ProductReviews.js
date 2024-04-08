@@ -8,6 +8,7 @@ import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductReviewsAction, deleteReviewAction, clearErrors } from '../../actions/productActions';
 import { DELETE_REVIEW_RESET } from '../../constants/productConstants';
+import DeleteConfirm from '../layout/DeleteConfirm';
 
 const ProductReviews = () => {
 
@@ -18,6 +19,9 @@ const ProductReviews = () => {
 
     const { error, reviews } = useSelector(state => state.productReviews);
     const { isDeleted } = useSelector(state => state.review);
+
+    const [showConfirmation, setShowConfirmation] = useState(false);
+    const [reviewIdToDelete, setReviewIdToDelete] = useState(null);
 
     useEffect(() => {
 
@@ -34,8 +38,15 @@ const ProductReviews = () => {
     }, [dispatch, alert, error, isDeleted]);
 
     const deleteReviewHandler = (id) => {
-        dispatch(deleteReviewAction(id, productId));
+        //dispatch(deleteReviewAction(id, productId));
+        setShowConfirmation(true);
+        setReviewIdToDelete(id);
     };
+
+    const confirmDeleteHandler = () => {
+        dispatch(deleteReviewAction(reviewIdToDelete, productId));
+        setShowConfirmation(false);
+    }
 
     const submitHandler = (e) => {
         e.preventDefault();
@@ -137,6 +148,13 @@ const ProductReviews = () => {
                     ): (
                         <p className='mt-5 text-center'>Không Có Đánh Giá.</p>
                     )}
+
+                    <DeleteConfirm
+                        show={showConfirmation}
+                        onClose={() => setShowConfirmation(false)}
+                        onConfirm={confirmDeleteHandler}
+                        deleteType='đánh giá'
+                    />
                     
                 </Fragment>
             </div>
