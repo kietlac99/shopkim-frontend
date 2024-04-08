@@ -10,6 +10,7 @@ import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
 import { allOrdersAction, deleteOrderAction, clearErrorsAction } from '../../actions/orderActions';
 import { DELETE_ORDER_RESET } from '../../constants/orderConstants';
+import DeleteConfirm from '../layout/DeleteConfirm';
 
 const OrdersList = ({ history }) => {
 
@@ -18,6 +19,9 @@ const OrdersList = ({ history }) => {
 
     const { loading, error, orders } = useSelector(state => state.allOrders);
     const { isDeleted } = useSelector(state => state.order);
+
+    const [showConfirmation, setShowConfirmation] = useState(false);
+    const [orderIdToDelete, setOrderIdToDelete] = useState(null);
 
     useEffect(() => {
         dispatch(allOrdersAction());
@@ -35,8 +39,15 @@ const OrdersList = ({ history }) => {
     }, [dispatch, alert, error, isDeleted, history]);
 
     const deleteOrderHandler = (id) => {
-        dispatch(deleteOrderAction(id));
+        //dispatch(deleteOrderAction(id));
+        setShowConfirmation(true);
+        setOrderIdToDelete(id);
     };
+
+    const confirmDeleteHandler = () => {
+        dispatch(deleteOrderAction(orderIdToDelete));
+        setShowConfirmation(false);
+    }
 
     const setOrders = () => {
         const data = {
@@ -114,6 +125,13 @@ const OrdersList = ({ history }) => {
                             hover
                         />
                     )}
+
+                    <DeleteConfirm
+                        show={showConfirmation}
+                        onClose={() => setShowConfirmation(false)}
+                        onConfirm={confirmDeleteHandler}
+                        deleteType='đơn hàng'
+                    />
                 </Fragment>
             </div>
         </div>
