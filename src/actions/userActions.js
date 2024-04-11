@@ -34,6 +34,9 @@ import {
     DELETE_USER_REQUEST,
     DELETE_USER_SUCCESS,
     DELETE_USER_FAIL,
+    REGISTER_USER_CONFIRM_REQUEST,
+    REGISTER_USER_CONFIRM_SUCCESS,
+    REGISTER_USER_CONFIRM_FAIL,
     CLEAR_ERRORS
 } from '../constants/userConstants';
 
@@ -121,7 +124,7 @@ export const getUserProfile = async(token) => {
 // Register user
 export const registerAction = (userData) => async(dispatch) => {
     try {
-        dispatch({ type: REGISTER_USER_REQUEST })
+        dispatch({ type: REGISTER_USER_REQUEST });
 
         const headers = {
             'Content-Type': 'multipart/form-data'
@@ -134,18 +137,44 @@ export const registerAction = (userData) => async(dispatch) => {
             headers
         });
 
+        dispatch({
+            type: REGISTER_USER_SUCCESS,
+            payload: data.payload
+        });
+    } catch (error) {
+        dispatch({
+            type: REGISTER_USER_FAIL,
+            payload: error.response.data.errors[0].message || error.response.data.errors[0].msg
+        });
+    }
+}
+
+export const registerConfirmAction = (email) => async(dispatch) => {
+    try {
+        dispatch({ type: REGISTER_USER_CONFIRM_REQUEST });
+
+        const headers = {
+            'Content-Type': 'application/json'
+        };
+
+        const { data } = await axios({
+            url: `${SHOP_KIM_API}/api/v1/auth/register/email-confirm/${email}`,
+            method: 'POST',
+            headers
+        });
+
         const token = data.payload;
         
         const userProfile = await getUserProfile(token);
         const user = userProfile.data.user;
 
         dispatch({
-            type: REGISTER_USER_SUCCESS,
+            type: REGISTER_USER_CONFIRM_SUCCESS,
             payload: user
         });
     } catch (error) {
         dispatch({
-            type: REGISTER_USER_FAIL,
+            type: REGISTER_USER_CONFIRM_FAIL,
             payload: error.response.data.errors[0].message || error.response.data.errors[0].msg
         });
     }
