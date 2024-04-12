@@ -22,6 +22,7 @@ const RegisterConfirm = ({ history, match }) => {
     }
 
     if (isAuthenticated && !error) { 
+      console.log(isAuthenticated);
       history.push("/login");
     }
   }, [dispatch, alert, error, isAuthenticated, history, match.params.email]);
