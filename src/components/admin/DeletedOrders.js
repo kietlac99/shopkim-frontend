@@ -73,7 +73,7 @@ const DeletedOrders = () => {
                     <Fragment>
                         <button className='btn-danger py-1 px-2 ml-2' 
                         onClick={() => restoreOrderHandler(order?.value?._id)}>
-                            <i className='fas fa-trash-restore'></i>
+                            <i className='fa fa-undo'></i>
                         </button>
                     </Fragment>
             })
