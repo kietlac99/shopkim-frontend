@@ -26,6 +26,10 @@ const DeletedOrders = () => {
         }
     }, [dispatch, alert, error]);
 
+    const restoreOrderHandler = (id) => {
+        
+    }
+
     const setOrders = () => {
         const data = {
             columns: [
