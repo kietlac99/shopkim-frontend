@@ -21,10 +21,19 @@ const RegisterConfirm = ({ history, match }) => {
       dispatch(clearErrors());
     }
 
-    if (isAuthenticated) { 
+    if (isAuthenticated && !error) { 
       history.push("/login");
     }
   }, [dispatch, alert, error, isAuthenticated, history, match.params.email]);
+
+  return (
+    <Fragment>
+      <div>
+        <h1>Xác nhận đăng ký</h1>
+        <p>Xin vui lòng đợi trong khi chúng tôi xác nhận đăng ký của bạn...</p>
+      </div>
+    </Fragment>
+  );
 };
 
 export default RegisterConfirm;
