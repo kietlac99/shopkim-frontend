@@ -96,7 +96,7 @@ function App() {
 
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
-          <Route path='/register/confirm/:email' component={RegisterConfirm} />
+          <Route path='/register/confirm/:email' component={RegisterConfirm} exact/>
           <Route path="/password/forgot" component={ForgotPassword} exact />
           <Route path="/password/reset/:token" component={NewPassword} exact />
           <ProtectedRoute path="/me" component={Profile} exact />
