@@ -19,6 +19,9 @@ import {
     ORDER_DETAILS_REQUEST,
     ORDER_DETAILS_SUCCESS,
     ORDER_DETAILS_FAIL,
+    DELETED_ORDERS_REQUEST,
+    DELETED_ORDERS_SUCCESS,
+    DELETED_ORDERS_FAIL,
     CLEAR_ERRORS
 } from '../constants/orderConstants';
 
@@ -217,5 +220,32 @@ export const orderReducer = (state = {}, action ) => {
 
         default:
             return state;
+    }
+}
+
+export const deletedOrdersReducer = (state = { orders : [] }, action) => {
+    switch (action.type) {
+        case DELETED_ORDERS_REQUEST:
+            return {
+                loading: true
+            }
+
+        case DELETED_ORDERS_SUCCESS:
+            return {
+                loading: false,
+                orders: action.payload
+            }
+        
+        case DELETED_ORDERS_FAIL:
+            return {
+                loading: false,
+                error: action.payload
+            }
+
+        case CLEAR_ERRORS:
+            return {
+                ...state,
+                error: null
+            }
     }
 }

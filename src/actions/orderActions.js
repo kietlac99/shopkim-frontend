@@ -19,10 +19,13 @@ import {
     ORDER_DETAILS_REQUEST,
     ORDER_DETAILS_SUCCESS,
     ORDER_DETAILS_FAIL,
+    DELETED_ORDERS_REQUEST,
+    DELETED_ORDERS_SUCCESS,
+    DELETED_ORDERS_FAIL,
     CLEAR_ERRORS,
 } from '../constants/orderConstants';
 
-import { SHOP_KIM_API } from '../config';
+import { SHOP_KIM_API, DELETED_TYPE } from '../config';
 
 export const createOrderAction = (order) => async (dispatch, getState) => {
     try {
@@ -222,6 +225,42 @@ export const deleteOrderAction = (id) => async (dispatch) => {
         });
     }
 };
+
+export const getDeletedOrdersAction = () => async (dispatch) => {
+    try {
+        dispatch({ type: DELETED_ORDERS_REQUEST });
+
+        const token = localStorage.getItem('userToken');
+
+        if (token === null) throw new Error();
+
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `${token}`
+        };
+
+        const { data } = await axios({
+            url: `${SHOP_KIM_API}/api/v1/redis/scan`,
+            method: 'POST',
+            data: { 
+                scanType: DELETED_TYPE.DELETED_ORDER, 
+                keyword: ''
+            },
+            headers
+        });
+
+        dispatch({
+            type: DELETED_ORDERS_SUCCESS,
+            payload: data.payload
+        })
+
+    } catch (error) {
+        dispatch({
+            type: DELETED_ORDERS_FAIL,
+            payload: error.response.data.errors[0].message || error.response.data.errors[0].msg
+        })
+    }
+}
 
 // Clear Errors
 export const clearErrorsAction = () => async (dispatch) => {
