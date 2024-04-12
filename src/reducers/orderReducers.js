@@ -247,5 +247,8 @@ export const deletedOrdersReducer = (state = { orders : [] }, action) => {
                 ...state,
                 error: null
             }
+
+        default:
+            return state;
     }
 }
