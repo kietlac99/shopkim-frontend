@@ -22,6 +22,8 @@ import {
     DELETED_ORDERS_REQUEST,
     DELETED_ORDERS_SUCCESS,
     DELETED_ORDERS_FAIL,
+    RESTORE_DELETED_ORDER_SUCCESS,
+    RESTORE_DELETED_ORDER_FAIL,
     CLEAR_ERRORS,
 } from '../constants/orderConstants';
 
@@ -257,6 +259,40 @@ export const getDeletedOrdersAction = () => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: DELETED_ORDERS_FAIL,
+            payload: error.response.data.errors[0].message || error.response.data.errors[0].msg
+        })
+    }
+}
+
+export const restoreDeletedOrderAction = (orderId) => async (dispatch) => {
+    try {
+        dispatch({ type: RESTORE_DELETED_ORDER_REQUEST });
+
+        const token = localStorage.getItem('userToken');
+
+        if (token === null) throw new Error();
+
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `${token}`
+        };
+
+        const { data } = await axios({
+            url: `${SHOP_KIM_API}/api/v1/order/restore-deleted-orders`,
+            method: 'POST',
+            data: { 
+                keyword: orderId
+            },
+            headers
+        });
+
+        dispatch({ 
+            type: RESTORE_DELETED_ORDER_SUCCESS,
+            payload: data.success
+        })
+    } catch (error) {
+        dispatch({
+            type: RESTORE_DELETED_ORDER_FAIL,
             payload: error.response.data.errors[0].message || error.response.data.errors[0].msg
         })
     }

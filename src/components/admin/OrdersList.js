@@ -10,7 +10,8 @@ import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
 import { allOrdersAction, deleteOrderAction, clearErrorsAction } from '../../actions/orderActions';
 import { DELETE_ORDER_RESET } from '../../constants/orderConstants';
-import DeleteConfirm from '../layout/DeleteConfirm';
+import Confirm from '../layout/Confirm';
+import { CONFIRM_TYPE, CONFIRM_TO } from '../../config';
 
 const OrdersList = ({ history }) => {
 
@@ -126,11 +127,12 @@ const OrdersList = ({ history }) => {
                         />
                     )}
 
-                    <DeleteConfirm
+                    <Confirm
                         show={showConfirmation}
                         onClose={() => setShowConfirmation(false)}
                         onConfirm={confirmDeleteHandler}
-                        deleteType='đơn hàng'
+                        confirmType={CONFIRM_TYPE.DELETE}
+                        type={CONFIRM_TO.ORDER}
                     />
                 </Fragment>
             </div>

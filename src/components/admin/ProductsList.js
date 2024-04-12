@@ -5,12 +5,13 @@ import { MDBDataTable } from 'mdbreact';
 import MetaData from "../layout/MetaData";
 import Loader from '../layout/Loader';
 import Sidebar from './Sidebar';
-import DeleteConfirm from '../layout/DeleteConfirm';
+import Confirm from '../layout/Confirm';
 
 import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
 import { getAdminProductsAction, deleteProductAction, clearErrors } from '../../actions/productActions';
 import { DELETE_PRODUCT_RESET } from '../../constants/productConstants';
+import { CONFIRM_TYPE, CONFIRM_TO } from '../../config';
 
 const ProductsList = ({ history }) => {
 
@@ -130,11 +131,12 @@ const ProductsList = ({ history }) => {
                         />
                     )}
 
-                    <DeleteConfirm
+                    <Confirm
                         show={showConfirmation}
                         onClose={() => setShowConfirmation(false)}
                         onConfirm={confirmDeleteHandler}
-                        deleteType='sản phẩm'
+                        confirmType={CONFIRM_TYPE.DELETE}
+                        type={CONFIRM_TO.PRODUCT}
                     />
                 </Fragment>
             </div>

@@ -3,4 +3,16 @@ export const SHOP_KIM_API = 'https://shopkim.onrender.com';
 
 export const DELETED_TYPE = {
     'DELETED_ORDER': 'DELETED_ORDER'
+};
+
+export const CONFIRM_TYPE = {
+    'DELETE': 'xóa',
+    'RESTORE': 'khôi phục'
+};
+
+export const CONFIRM_TO = {
+    'ORDER': 'đơn hàng',
+    'PRODUCT': 'sản phẩm',
+    'USER': 'người dùng',
+    'REVIEW': 'đánh giá' 
 }

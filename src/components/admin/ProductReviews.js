@@ -8,7 +8,8 @@ import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductReviewsAction, deleteReviewAction, clearErrors } from '../../actions/productActions';
 import { DELETE_REVIEW_RESET } from '../../constants/productConstants';
-import DeleteConfirm from '../layout/DeleteConfirm';
+import Confirm from '../layout/Confirm';
+import { CONFIRM_TYPE, CONFIRM_TO } from '../../config';
 
 const ProductReviews = () => {
 
@@ -149,11 +150,12 @@ const ProductReviews = () => {
                         <p className='mt-5 text-center'>Không Có Đánh Giá.</p>
                     )}
 
-                    <DeleteConfirm
+                    <Confirm
                         show={showConfirmation}
                         onClose={() => setShowConfirmation(false)}
                         onConfirm={confirmDeleteHandler}
-                        deleteType='đánh giá'
+                        confirmType={CONFIRM_TYPE.DELETE}
+                        type={CONFIRM_TO.REVIEW}
                     />
                     
                 </Fragment>

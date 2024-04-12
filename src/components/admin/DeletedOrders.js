@@ -5,10 +5,12 @@ import { MDBDataTable } from 'mdbreact';
 import MetaData from "../layout/MetaData";
 import Loader from '../layout/Loader';
 import Sidebar from './Sidebar';
+import Confirm from '../layout/Confirm';
 
 import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
-import { getDeletedOrdersAction, clearErrorsAction } from '../../actions/orderActions';
+import { getDeletedOrdersAction, restoreDeletedOrderAction, clearErrorsAction } from '../../actions/orderActions';
+import { CONFIRM_TYPE, CONFIRM_TO } from '../../config';
 
 const DeletedOrders = () => {
 
@@ -16,6 +18,9 @@ const DeletedOrders = () => {
     const dispatch = useDispatch();
 
     const { loading, error, orders } = useSelector(state => state.deletedOrders);
+
+    const [showConfirmation, setShowConfirmation] = useState(false);
+    const [orderIdToRestore, setOrderIdToRestore] = useState(null);
 
     useEffect(() => {
         dispatch(getDeletedOrdersAction());
@@ -27,7 +32,13 @@ const DeletedOrders = () => {
     }, [dispatch, alert, error]);
 
     const restoreOrderHandler = (id) => {
+        setShowConfirmation(true);
+        setOrderIdToRestore(id);
+    }
 
+    const confirmRestoreHandler = () => {
+        dispatch(restoreDeletedOrderAction(orderIdToRestore));
+        setShowConfirmation(false);
     }
 
     const setOrders = () => {
@@ -103,6 +114,14 @@ const DeletedOrders = () => {
                             hover
                         />
                     )}
+
+                    <Confirm
+                        show={showConfirmation}
+                        onClose={() => setShowConfirmation(false)}
+                        onConfirm={confirmRestoreHandler}
+                        confirmType={CONFIRM_TYPE.RESTORE}
+                        type={CONFIRM_TO.ORDER}
+                    />
                 </Fragment>
             </div>
         </div>
