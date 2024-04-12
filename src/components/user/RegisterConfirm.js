@@ -9,46 +9,22 @@ const RegisterConfirm = ({ history, match }) => {
 
   const alert = useAlert();
   const dispatch = useDispatch();
-  const [showConfirmation, setShowConfirmation] = useState(true);
 
   const { isAuthenticated, error } = useSelector(state => state.auth);
 
-  useEffect(() => {
-      dispatch(registerConfirmAction(match.params.email)); 
-  }, []);
 
   useEffect(() => {
-      if (error) {
-        alert.error(error);
-        dispatch(clearErrors());
-      }
-  
-      if (isAuthenticated) { 
-        history.push("/login");
-      }
-  }, [dispatch, alert, error, isAuthenticated, history]);
+    dispatch(registerConfirmAction(match.params.email)); 
 
-  useEffect(() => {
-    return () => {
-        setShowConfirmation(false); // Ẩn thông báo xác nhận đăng ký khi component unmounted
-    };
-  }, []);
+    if (error) {
+      alert.error(error);
+      dispatch(clearErrors());
+    }
 
-  return (
-    <Fragment>
-
-    <MetaData title={'Register Confirm'} />
-
-    {showConfirmation && (
-        <div className="row justify-content-center">
-          <div className="col-6 mt-5 text-center">
-              <h2>Xác nhận đăng ký.</h2>
-          </div>
-        </div>
-    )}
-      
-  </Fragment>
-  )
+    if (isAuthenticated) { 
+      history.push("/login");
+    }
+  }, [dispatch, alert, error, isAuthenticated, history, match.params.email]);
 };
 
 export default RegisterConfirm;
