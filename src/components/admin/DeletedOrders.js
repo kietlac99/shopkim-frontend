@@ -10,14 +10,16 @@ import Confirm from '../layout/Confirm';
 import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
 import { getDeletedOrdersAction, restoreDeletedOrderAction, clearErrorsAction } from '../../actions/orderActions';
+import { RESTORE_DELETED_ORDER_RESET } from '../../constants/orderConstants';
 import { CONFIRM_TYPE, CONFIRM_TO } from '../../config';
 
-const DeletedOrders = () => {
+const DeletedOrders = ({ history }) => {
 
     const alert = useAlert();
     const dispatch = useDispatch();
 
     const { loading, error, orders } = useSelector(state => state.deletedOrders);
+    const { isRestored } = useSelector(state => state.order);
 
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [orderIdToRestore, setOrderIdToRestore] = useState(null);
@@ -29,7 +31,13 @@ const DeletedOrders = () => {
             alert.error(error);
             dispatch(clearErrorsAction());
         }
-    }, [dispatch, alert, error]);
+
+        if (isRestored) {
+            alert.success('Đơn hàng khôi phục thành công!');
+            history.push('/admin/orders/deleted')
+            dispatch({ type: RESTORE_DELETED_ORDER_RESET });
+        }
+    }, [dispatch, alert, error, isRestored, history]);
 
     const restoreOrderHandler = (id) => {
         setShowConfirmation(true);
