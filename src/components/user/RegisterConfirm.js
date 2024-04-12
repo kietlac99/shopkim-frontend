@@ -9,6 +9,7 @@ const RegisterConfirm = ({ history, match }) => {
 
     const alert = useAlert();
     const dispatch = useDispatch();
+    const [showConfirmation, setShowConfirmation] = useState(true);
   
     const { isAuthenticated, error } = useSelector(state => state.auth);
 
@@ -27,17 +28,24 @@ const RegisterConfirm = ({ history, match }) => {
         }
     }, [dispatch, alert, error, isAuthenticated, history]);
 
+    useEffect(() => {
+      return () => {
+          setShowConfirmation(false); // Ẩn thông báo xác nhận đăng ký khi component unmounted
+      };
+  }, []);
+
   return (
     <Fragment>
 
     <MetaData title={'Register Confirm'} />
 
-    <div className="row justify-content-center">
-      <div className="col-6 mt-5 text-center">
-
-          <h2>Xác nhận đăng ký.</h2>
-      </div>
-    </div>
+    {showConfirmation && (
+        <div className="row justify-content-center">
+          <div className="col-6 mt-5 text-center">
+              <h2>Xác nhận đăng ký.</h2>
+          </div>
+        </div>
+    )}
       
   </Fragment>
   )
