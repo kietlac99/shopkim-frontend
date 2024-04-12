@@ -35,7 +35,24 @@ const Sidebar = () => {
                 <li>
                     <Link to="/admin/reviews"><i className="fa fa-star"></i> Đánh Giá</Link>
                 </li>
-    
+
+                <li>
+                    <a href="#trashSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle"><i
+                        className="fa fa-trash"></i> Thùng Rác</a>
+                    <ul className="collapse list-unstyled" id="trashSubmenu">
+                        <li>
+                            <Link to="/admin/trash/orders"><i className="fa fa-clipboard"></i> Đơn Hàng</Link>
+                        </li>
+        
+                        <li>
+                            <Link to="/admin/trash/products"><i className="fa fa-clipboard"></i> Sản Phẩm</Link>
+                        </li>
+
+                        <li>
+                            <Link to="/admin/trash/users"><i className="fa fa-clipboard"></i> Người Dùng</Link>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </nav>
     </div>
