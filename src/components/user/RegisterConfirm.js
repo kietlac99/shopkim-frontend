@@ -7,31 +7,31 @@ import { registerConfirmAction, clearErrors } from '../../actions/userActions';
 
 const RegisterConfirm = ({ history, match }) => {
 
-    const alert = useAlert();
-    const dispatch = useDispatch();
-    const [showConfirmation, setShowConfirmation] = useState(true);
+  const alert = useAlert();
+  const dispatch = useDispatch();
+  const [showConfirmation, setShowConfirmation] = useState(true);
+
+  const { isAuthenticated, error } = useSelector(state => state.auth);
+
+  useEffect(() => {
+      dispatch(registerConfirmAction(match.params.email)); 
+  }, []);
+
+  useEffect(() => {
+      if (error) {
+        alert.error(error);
+        dispatch(clearErrors());
+      }
   
-    const { isAuthenticated, error } = useSelector(state => state.auth);
+      if (isAuthenticated) { 
+        history.push("/login");
+      }
+  }, [dispatch, alert, error, isAuthenticated, history]);
 
-    useEffect(() => {
-        dispatch(registerConfirmAction(match.params.email)); 
-    }, []);
-
-    useEffect(() => {
-        if (error) {
-          alert.error(error);
-          dispatch(clearErrors());
-        }
-    
-        if (isAuthenticated) { 
-          history.push("/login");
-        }
-    }, [dispatch, alert, error, isAuthenticated, history]);
-
-    useEffect(() => {
-      return () => {
-          setShowConfirmation(false); // Ẩn thông báo xác nhận đăng ký khi component unmounted
-      };
+  useEffect(() => {
+    return () => {
+        setShowConfirmation(false); // Ẩn thông báo xác nhận đăng ký khi component unmounted
+    };
   }, []);
 
   return (
