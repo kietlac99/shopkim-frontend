@@ -27,6 +27,7 @@ import Payment from "./components/cart/Payment";
 // Auth or User Imports
 import Login from './components/user/Login';
 import Register from './components/user/Register';
+import RegisterConfirm from './components/user/RegisterConfirm';
 import Profile from './components/user/Profile';
 import UpdateProfile from "./components/user/UpdateProfile";
 import UpdatePassword from "./components/user/UpdatePassword";
@@ -95,6 +96,7 @@ function App() {
 
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
+          <Route path='/register/confirm/:email' component={RegisterConfirm} />
           <Route path="/password/forgot" component={ForgotPassword} exact />
           <Route path="/password/reset/:token" component={NewPassword} exact />
           <ProtectedRoute path="/me" component={Profile} exact />
