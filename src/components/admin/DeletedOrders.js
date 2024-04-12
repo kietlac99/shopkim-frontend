@@ -27,7 +27,7 @@ const DeletedOrders = () => {
     }, [dispatch, alert, error]);
 
     const restoreOrderHandler = (id) => {
-        
+
     }
 
     const setOrders = () => {
@@ -62,17 +62,17 @@ const DeletedOrders = () => {
         };
 
         orders.forEach(order => {
-            const formattedPrice = order?.totalPrice?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+            const formattedPrice = order?.value?.totalPrice?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
 
             data.rows.push({
-                id: order._id,
-                numOfItems: order.orderItems.length,
+                id: order?.value?._id,
+                numOfItems: order?.value?.orderItems.length,
                 amount: formattedPrice,
-                status: order.orderStatus,
+                status: order?.value?.orderStatus,
                 actions: 
                     <Fragment>
                         <button className='btn-danger py-1 px-2 ml-2' 
-                        onClick={() => restoreOrderHandler(order._id)}>
+                        onClick={() => restoreOrderHandler(order?.value?._id)}>
                             <i className='fa fa-restore'></i>
                         </button>
                     </Fragment>
