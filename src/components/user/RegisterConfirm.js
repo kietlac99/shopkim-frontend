@@ -23,7 +23,7 @@ const RegisterConfirm = ({ history, match }) => {
     }
 
     if (isAuthenticated && !error) { 
-      console.log(isAuthenticated);
+      alert.success('Xác nhận email thành công!');
       history.push("/login");
     }
   }, [dispatch, alert, error, isAuthenticated, history]);
