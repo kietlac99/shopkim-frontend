@@ -12,10 +12,11 @@ const RegisterConfirm = ({ history, match }) => {
 
   const { isAuthenticated, error } = useSelector(state => state.auth);
 
-
   useEffect(() => {
     dispatch(registerConfirmAction(match.params.email)); 
+  }, [match.params.email]);
 
+  useEffect(() => {
     if (error) {
       alert.error(error);
       dispatch(clearErrors());
@@ -25,7 +26,7 @@ const RegisterConfirm = ({ history, match }) => {
       console.log(isAuthenticated);
       history.push("/login");
     }
-  }, [dispatch, alert, error, isAuthenticated, history, match.params.email]);
+  }, [dispatch, alert, error, isAuthenticated, history]);
 
   return (
     <Fragment>
