@@ -30,9 +30,13 @@ const RegisterConfirm = ({ history, match }) => {
 
   return (
     <Fragment>
-      <div>
-        <h1>Xác nhận đăng ký</h1>
-        <p>Xin vui lòng đợi trong khi chúng tôi xác nhận đăng ký của bạn...</p>
+      <div className="register-confirm-container">
+        <MetaData title="Xác nhận đăng ký" />
+
+        <div className="register-confirm-content">
+          <h1>Xác nhận đăng ký</h1>
+          <p>Xin vui lòng đợi trong khi chúng tôi xác nhận đăng ký của bạn...</p>
+        </div>
       </div>
     </Fragment>
   );

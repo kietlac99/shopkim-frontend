@@ -614,3 +614,14 @@ ul.CTAs a {
   font-size: 0.8rem;
   color: grey;
 }
+
+.register-confirm-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.register-confirm-content {
+  text-align: center;
+}
