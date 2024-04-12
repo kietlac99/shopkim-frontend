@@ -41,15 +41,15 @@ const Sidebar = () => {
                         className="fa fa-trash"></i> Thùng Rác</a>
                     <ul className="collapse list-unstyled" id="trashSubmenu">
                         <li>
-                            <Link to="/admin/deleted/orders"><i className="fa fa-shopping-basket"></i> Đơn Hàng</Link>
+                            <Link to="/admin/orders/deleted"><i className="fa fa-shopping-basket"></i> Đơn Hàng</Link>
                         </li>
         
                         <li>
-                            <Link to="/admin/deleted/products"><i className="fa fa-product-hunt"></i> Sản Phẩm</Link>
+                            <Link to="/admin/products/deleted"><i className="fa fa-product-hunt"></i> Sản Phẩm</Link>
                         </li>
 
                         <li>
-                            <Link to="/admin/deleted/users"><i className="fa fa-users"></i> Người Dùng</Link>
+                            <Link to="/admin/users/deleted"><i className="fa fa-users"></i> Người Dùng</Link>
                         </li>
                     </ul>
                 </li>
