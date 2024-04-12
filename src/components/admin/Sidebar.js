@@ -51,6 +51,10 @@ const Sidebar = () => {
                         <li>
                             <Link to="/admin/users/deleted"><i className="fa fa-users"></i> Người Dùng</Link>
                         </li>
+
+                        <li>
+                            <Link to="/admin/reviews/deleted"><i className="fa fa-star"></i> Đánh giá</Link>
+                        </li>
                     </ul>
                 </li>
             </ul>
