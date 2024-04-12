@@ -33,6 +33,7 @@ import UpdateProfile from "./components/user/UpdateProfile";
 import UpdatePassword from "./components/user/UpdatePassword";
 import ForgotPassword from "./components/user/ForgotPassword";
 import NewPassword from "./components/user/NewPassword";
+import DeletedOrders from './components/admin/DeletedOrders';
 
 // Order Imports
 import ListOrders from "./components/order/ListOrders";
@@ -114,6 +115,7 @@ function App() {
         <ProtectedRoute path="/admin/product/:id" isAdmin={true} component={UpdateProduct} exact />
         <ProtectedRoute path="/admin/orders" isAdmin={true} component={OrdersList} exact />
         <ProtectedRoute path="/admin/order/:id" isAdmin={true} component={ProcessOrder} exact />
+        <ProtectedRoute path="/admin/orders/deleted" isAdmin={true} component={DeletedOrders} exact />
         <ProtectedRoute path="/admin/users" isAdmin={true} component={UsersList} exact />
         <ProtectedRoute path="/admin/user/:id" isAdmin={true} component={UpdateUser} exact />
         <ProtectedRoute path="/admin/reviews" isAdmin={true} component={ProductReviews} exact />
