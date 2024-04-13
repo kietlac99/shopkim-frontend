@@ -38,6 +38,9 @@ import {
     DELETE_USER_SUCCESS,
     DELETE_USER_RESET,
     DELETE_USER_FAIL,
+    REGISTER_USER_CONFIRM_REQUEST,
+    REGISTER_USER_CONFIRM_SUCCESS,
+    REGISTER_USER_CONFIRM_FAIL,
     CLEAR_ERRORS
 } from '../constants/userConstants';
 
@@ -46,6 +49,7 @@ export const authReducer = (state = { user: {} }, action) => {
 
         case LOGIN_REQUEST:
         case REGISTER_USER_REQUEST:
+        case REGISTER_USER_CONFIRM_REQUEST:
         case LOAD_USER_REQUEST:
             return {
                 loading: true,
@@ -53,13 +57,20 @@ export const authReducer = (state = { user: {} }, action) => {
             }
 
         case LOGIN_SUCCESS:
-        case REGISTER_USER_SUCCESS:
         case LOAD_USER_SUCCESS:
+        case REGISTER_USER_CONFIRM_SUCCESS:
             return {
                 ...state,
                 loading: false,
                 isAuthenticated: true,
                 user: action.payload
+            }
+
+        case REGISTER_USER_SUCCESS:
+            return {
+                loading: false,
+                isAuthenticated: false,
+                message: action.payload
             }
 
         case LOGOUT_SUCCESS:
@@ -80,6 +91,14 @@ export const authReducer = (state = { user: {} }, action) => {
         case LOGOUT_FAIL:
             return {
                 ...state,
+                error: action.payload
+            }
+
+        case REGISTER_USER_CONFIRM_FAIL:
+            return {
+                ...state,
+                loading: false,
+                isAuthenticated: false,
                 error: action.payload
             }
 

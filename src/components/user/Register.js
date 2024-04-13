@@ -21,19 +21,19 @@ const Register = ({ history }) => {
   const alert = useAlert();
   const dispatch = useDispatch();
 
-  const { isAuthenticated, error, loading } = useSelector(state => state.auth);
+  const { error, loading, message } = useSelector(state => state.auth);
 
   useEffect(() => {
-
-    if (isAuthenticated) {
-      history.push('/');
+    if (message) {
+      history.push('/login');
+      alert.success(message);
     }
 
     if (error) {
       alert.error(error);
       dispatch(clearErrors());
     }
-  }, [dispatch, alert, isAuthenticated, error, history]);
+  }, [dispatch, alert, error, message, history]);
 
   const submitHandler = (e) => {
     e.preventDefault();
