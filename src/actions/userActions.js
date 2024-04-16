@@ -37,10 +37,13 @@ import {
     REGISTER_USER_CONFIRM_REQUEST,
     REGISTER_USER_CONFIRM_SUCCESS,
     REGISTER_USER_CONFIRM_FAIL,
+    DELETED_USERS_REQUEST,
+    DELETED_USERS_SUCCESS,
+    DELETED_USERS_FAIL,
     CLEAR_ERRORS
 } from '../constants/userConstants';
 
-import { SHOP_KIM_API } from '../config';
+import { SHOP_KIM_API, DELETED_TYPE } from '../config';
 
 import axios from 'axios';
 
@@ -477,6 +480,42 @@ export const deleteUserAction = (id) => async(dispatch) => {
             type: DELETE_USER_FAIL,
             payload: error.response.data.errors[0].message || error.response.data.errors[0].msg
         });
+    }
+}
+
+export const getDeletedUsersAction = () => async (dispatch) => {
+    try {
+        dispatch({ type: DELETED_USERS_REQUEST });
+
+        const token = localStorage.getItem('userToken');
+
+        if (token === null) throw new Error();
+
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `${token}`
+        };
+
+        const { data } = await axios({
+            url: `${SHOP_KIM_API}/api/v1/redis/scan`,
+            method: 'POST',
+            data: { 
+                scanType: DELETED_TYPE.DELETED_USER, 
+                keyword: ''
+            },
+            headers
+        });
+
+        dispatch({
+            type: DELETED_USERS_SUCCESS,
+            payload: data.payload
+        })
+
+    } catch (error) {
+        dispatch({
+            type: DELETED_USERS_FAIL,
+            payload: error.response.data.errors[0].message || error.response.data.errors[0].msg
+        })
     }
 }
 
