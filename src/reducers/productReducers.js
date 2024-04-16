@@ -31,6 +31,9 @@ import {
     NEW_PRODUCT_SUCCESS,
     NEW_PRODUCT_RESET,
     NEW_PRODUCT_FAIL,
+    DELETED_PRODUCTS_REQUEST,
+    DELETED_PRODUCTS_SUCCESS,
+    DELETED_PRODUCTS_FAIL,
     CLEAR_ERRORS
 } from '../constants/productConstants';
 
@@ -296,6 +299,36 @@ export const reviewReducer = (state = {}, action ) => {
             return {
                 ...state,
                 isDeleted: false
+            }
+
+        case CLEAR_ERRORS:
+            return {
+                ...state,
+                error: null
+            }
+
+        default:
+            return state;
+    }
+}
+
+export const deletedProductsReducer = (state = { products : [] }, action) => {
+    switch (action.type) {
+        case DELETED_PRODUCTS_REQUEST:
+            return {
+                loading: true
+            }
+
+        case DELETED_PRODUCTS_SUCCESS:
+            return {
+                loading: false,
+                products: action.payload
+            }
+        
+        case DELETED_PRODUCTS_FAIL:
+            return {
+                loading: false,
+                error: action.payload
             }
 
         case CLEAR_ERRORS:

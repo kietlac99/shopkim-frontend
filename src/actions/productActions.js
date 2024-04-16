@@ -28,10 +28,13 @@ import {
   DELETE_REVIEW_REQUEST,
   DELETE_REVIEW_SUCCESS,
   DELETE_REVIEW_FAIL,
-  CLEAR_ERRORS
+  CLEAR_ERRORS,
+  DELETED_PRODUCTS_REQUEST,
+  DELETED_PRODUCTS_FAIL,
+  DELETED_PRODUCTS_SUCCESS
 } from '../constants/productConstants';
 
-import { SHOP_KIM_API } from '../config';
+import { SHOP_KIM_API, DELETED_TYPE } from '../config';
 
 export const getProducts = (keyword = '', currentPage = 1, price, category, rating = 0) => async (dispatch) => {
   try {
@@ -318,6 +321,42 @@ export const deleteReviewAction = (id, productId) => async (dispatch) => {
     });
   }
 };
+
+export const getDeletedProductsAction = () => async (dispatch) => {
+  try {
+      dispatch({ type: DELETED_PRODUCTS_REQUEST });
+
+      const token = localStorage.getItem('userToken');
+
+      if (token === null) throw new Error();
+
+      const headers = {
+          'Content-Type': 'application/json',
+          'Authorization': `${token}`
+      };
+
+      const { data } = await axios({
+          url: `${SHOP_KIM_API}/api/v1/redis/scan`,
+          method: 'POST',
+          data: { 
+              scanType: DELETED_TYPE.DELETED_PRODUCT, 
+              keyword: ''
+          },
+          headers
+      });
+
+      dispatch({
+          type: DELETED_PRODUCTS_SUCCESS,
+          payload: data.payload
+      })
+
+  } catch (error) {
+      dispatch({
+          type: DELETED_PRODUCTS_FAIL,
+          payload: error.response.data.errors[0].message || error.response.data.errors[0].msg
+      })
+  }
+}
 
 export const clearErrors = () => async (dispatch) => {
   dispatch({
