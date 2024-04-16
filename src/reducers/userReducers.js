@@ -180,6 +180,12 @@ export const userReducer = (state = {}, action) => {
                 isDeleted: false
             }
 
+        case RESTORE_DELETED_USER_RESET:
+            return {
+                ...state,
+                isRestored: false
+            }
+
         case UPDATE_PROFILE_FAIL:
         case UPDATE_PASSWORD_FAIL:
         case UPDATE_USER_FAIL:
