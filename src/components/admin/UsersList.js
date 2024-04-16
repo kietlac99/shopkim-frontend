@@ -4,13 +4,14 @@ import { MDBDataTable } from 'mdbreact';
 
 import MetaData from "../layout/MetaData";
 import Loader from '../layout/Loader';
-import DeleteConfirm from '../layout/DeleteConfirm';
+import Confirm from '../layout/Confirm';
 import Sidebar from './Sidebar';
 
 import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
 import { allUsersAction, deleteUserAction, clearErrors } from '../../actions/userActions';
 import { DELETE_USER_RESET } from '../../constants/userConstants';
+import { CONFIRM_TYPE, CONFIRM_TO } from '../../config';
 
 const UsersList = ({ history }) => {
 
@@ -128,11 +129,12 @@ const UsersList = ({ history }) => {
                         />
                     )}
 
-                    <DeleteConfirm
+                    <Confirm
                         show={showConfirmation}
                         onClose={() => setShowConfirmation(false)}
                         onConfirm={confirmDeleteHandler}
-                        deleteType='người dùng'
+                        confirmType={CONFIRM_TYPE.DELETE}
+                        type={CONFIRM_TO.USER}
                     />
                 </Fragment>
             </div>

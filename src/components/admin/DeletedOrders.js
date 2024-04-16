@@ -5,48 +5,47 @@ import { MDBDataTable } from 'mdbreact';
 import MetaData from "../layout/MetaData";
 import Loader from '../layout/Loader';
 import Sidebar from './Sidebar';
+import Confirm from '../layout/Confirm';
 
 import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
-import { allOrdersAction, deleteOrderAction, clearErrorsAction } from '../../actions/orderActions';
-import { DELETE_ORDER_RESET } from '../../constants/orderConstants';
-import Confirm from '../layout/Confirm';
+import { getDeletedOrdersAction, restoreDeletedOrderAction, clearErrorsAction } from '../../actions/orderActions';
+import { RESTORE_DELETED_ORDER_RESET } from '../../constants/orderConstants';
 import { CONFIRM_TYPE, CONFIRM_TO } from '../../config';
 
-const OrdersList = ({ history }) => {
+const DeletedOrders = ({ history }) => {
 
     const alert = useAlert();
     const dispatch = useDispatch();
 
-    const { loading, error, orders } = useSelector(state => state.allOrders);
-    const { isDeleted } = useSelector(state => state.order);
+    const { loading, error, orders } = useSelector(state => state.deletedOrders);
+    const { isRestored } = useSelector(state => state.order);
 
     const [showConfirmation, setShowConfirmation] = useState(false);
-    const [orderIdToDelete, setOrderIdToDelete] = useState(null);
+    const [orderIdToRestore, setOrderIdToRestore] = useState(null);
 
     useEffect(() => {
-        dispatch(allOrdersAction());
+        dispatch(getDeletedOrdersAction());
 
         if (error) {
             alert.error(error);
             dispatch(clearErrorsAction());
         }
 
-        if(isDeleted) {
-            alert.success('Đơn hàng xóa thành công!');
-            history.push('/admin/orders');
-            dispatch({ type: DELETE_ORDER_RESET });
+        if (isRestored) {
+            alert.success('Đơn hàng khôi phục thành công!');
+            history.push('/admin/orders/deleted')
+            dispatch({ type: RESTORE_DELETED_ORDER_RESET });
         }
-    }, [dispatch, alert, error, isDeleted, history]);
+    }, [dispatch, alert, error, isRestored, history]);
 
-    const deleteOrderHandler = (id) => {
-        //dispatch(deleteOrderAction(id));
+    const restoreOrderHandler = (id) => {
         setShowConfirmation(true);
-        setOrderIdToDelete(id);
-    };
+        setOrderIdToRestore(id);
+    }
 
-    const confirmDeleteHandler = () => {
-        dispatch(deleteOrderAction(orderIdToDelete));
+    const confirmRestoreHandler = () => {
+        dispatch(restoreDeletedOrderAction(orderIdToRestore));
         setShowConfirmation(false);
     }
 
@@ -82,21 +81,18 @@ const OrdersList = ({ history }) => {
         };
 
         orders.forEach(order => {
-            const formattedPrice = order?.totalPrice?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+            const formattedPrice = order?.value?.totalPrice?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
 
             data.rows.push({
-                id: order._id,
-                numOfItems: order.orderItems.length,
+                id: order?.value?._id,
+                numOfItems: order?.value?.orderItems.length,
                 amount: formattedPrice,
-                status: order.orderStatus,
+                status: order?.value?.orderStatus,
                 actions: 
                     <Fragment>
-                        <Link to={`/admin/order/${order._id}`} className='btn btn-primary py-1 px-2'>
-                            <i className='fa fa-eye'></i>
-                        </Link>
                         <button className='btn-danger py-1 px-2 ml-2' 
-                        onClick={() => deleteOrderHandler(order._id)}>
-                            <i className='fa fa-trash'></i>
+                        onClick={() => restoreOrderHandler(order?.value?._id)}>
+                            <i className='fa fa-history'></i>
                         </button>
                     </Fragment>
             })
@@ -107,7 +103,7 @@ const OrdersList = ({ history }) => {
 
   return (
     <Fragment>
-        <MetaData title={'All Orders'} />
+        <MetaData title={'Deleted Orders'} />
         <div className='row'>
             <div className='col-12 col-md-2'>
                 <Sidebar />
@@ -115,7 +111,7 @@ const OrdersList = ({ history }) => {
 
             <div className='col-12 col-md-10'>
                 <Fragment>
-                    <h1 className='my-5'>Tất Cả Đơn Hàng</h1>
+                    <h1 className='my-5'>Đơn Hàng Trong Thùng Rác</h1>
 
                     {loading ? <Loader /> : (
                         <MDBDataTable 
@@ -130,8 +126,8 @@ const OrdersList = ({ history }) => {
                     <Confirm
                         show={showConfirmation}
                         onClose={() => setShowConfirmation(false)}
-                        onConfirm={confirmDeleteHandler}
-                        confirmType={CONFIRM_TYPE.DELETE}
+                        onConfirm={confirmRestoreHandler}
+                        confirmType={CONFIRM_TYPE.RESTORE}
                         type={CONFIRM_TO.ORDER}
                     />
                 </Fragment>
@@ -141,4 +137,4 @@ const OrdersList = ({ history }) => {
   )
 }
 
-export default OrdersList
+export default DeletedOrders

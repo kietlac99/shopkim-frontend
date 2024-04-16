@@ -1,13 +1,13 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
-const DeleteConfirm = ({ show, onClose, onConfirm, deleteType }) => {
+const Confirm = ({ show, onClose, onConfirm, confirmType, type }) => {
   return (
     <Modal show={show} onHide={onClose}>
         <Modal.Header closeButton>
-            <Modal.Title>Xác nhận xóa</Modal.Title>
+            <Modal.Title>Xác nhận {confirmType}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Bạn có chắc chắn muốn xóa {deleteType} này?</Modal.Body>
+        <Modal.Body>Bạn có chắc chắn muốn {confirmType} {type} này?</Modal.Body>
         <Modal.Footer>
             <Button variant="secondary" onClick={onClose}>
                 Hủy
@@ -20,4 +20,4 @@ const DeleteConfirm = ({ show, onClose, onConfirm, deleteType }) => {
   );
 };
 
-export default DeleteConfirm;
+export default Confirm;
