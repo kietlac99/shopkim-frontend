@@ -11,7 +11,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { getDeletedUsersAction, clearErrors } from '../../actions/userActions';
 //import { RESTORE_DELETED_ORDER_RESET } from '../../constants/orderConstants';
 import { CONFIRM_TYPE, CONFIRM_TO } from '../../config';
-const alert = useAlert();
+
+const DeletedUsers = () => {
+    const alert = useAlert();
     const dispatch = useDispatch();
 
     const { loading, error, users } = useSelector(state => state.deletedUsers);
@@ -94,7 +96,6 @@ const alert = useAlert();
 
         return data;
     };
-const DeletedUsers = () => {
   return (
     <Fragment>
         <MetaData title={'Deleted Users'} />
