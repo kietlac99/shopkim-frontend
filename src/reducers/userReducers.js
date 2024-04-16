@@ -44,6 +44,10 @@ import {
     DELETED_USERS_REQUEST,
     DELETED_USERS_SUCCESS,
     DELETED_USERS_FAIL,
+    RESTORE_DELETED_USER_REQUEST,
+    RESTORE_DELETED_USER_SUCCESS,
+    RESTORE_DELETED_USER_RESET,
+    RESTORE_DELETED_USER_FAIL,
     CLEAR_ERRORS
 } from '../constants/userConstants';
 
@@ -133,6 +137,7 @@ export const userReducer = (state = {}, action) => {
         case UPDATE_PASSWORD_REQUEST:
         case UPDATE_USER_REQUEST:
         case DELETE_USER_REQUEST:
+        case RESTORE_DELETED_USER_REQUEST:
             return {
                 ...state,
                 loading: true
@@ -154,6 +159,13 @@ export const userReducer = (state = {}, action) => {
                 isDeleted: action.payload
             }
 
+        case RESTORE_DELETED_USER_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                isRestored: action.payload
+            }
+
         case UPDATE_PROFILE_RESET:
         case UPDATE_PASSWORD_RESET:
         case UPDATE_USER_RESET:
@@ -172,6 +184,7 @@ export const userReducer = (state = {}, action) => {
         case UPDATE_PASSWORD_FAIL:
         case UPDATE_USER_FAIL:
         case DELETE_USER_FAIL:
+        case RESTORE_DELETED_USER_FAIL:
             return {
                 ...state,
                 loading: false,

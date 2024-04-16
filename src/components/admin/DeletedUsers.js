@@ -8,8 +8,8 @@ import Confirm from '../layout/Confirm';
 
 import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
-import { getDeletedUsersAction, clearErrors } from '../../actions/userActions';
-//import { RESTORE_DELETED_ORDER_RESET } from '../../constants/orderConstants';
+import { getDeletedUsersAction, restoreDeletedUserAction, clearErrors } from '../../actions/userActions';
+import { RESTORE_DELETED_USER_RESET } from '../../constants/userConstants';
 import { CONFIRM_TYPE, CONFIRM_TO } from '../../config';
 
 const DeletedUsers = ({ history }) => {
@@ -17,10 +17,10 @@ const DeletedUsers = ({ history }) => {
     const dispatch = useDispatch();
 
     const { loading, error, users } = useSelector(state => state.deletedUsers);
-    //const { isRestored } = useSelector(state => state.order);
+    const { isRestored } = useSelector(state => state.user);
 
-    // const [showConfirmation, setShowConfirmation] = useState(false);
-    // const [orderIdToRestore, setOrderIdToRestore] = useState(null);
+    const [showConfirmation, setShowConfirmation] = useState(false);
+    const [userIdToRestore, setUserIdToRestore] = useState(null);
 
     useEffect(() => {
         dispatch(getDeletedUsersAction());
@@ -30,21 +30,21 @@ const DeletedUsers = ({ history }) => {
             dispatch(clearErrors());
         }
 
-        // if (isRestored) {
-        //     alert.success('Đơn hàng khôi phục thành công!');
-        //     history.push('/admin/orders/deleted')
-        //     dispatch({ type: RESTORE_DELETED_ORDER_RESET });
-        // }
-    }, [dispatch, alert, error, /*isRestored*/, history]);
+        if (isRestored) {
+            alert.success('Người dùng khôi phục thành công!');
+            history.push('/admin/user/deleted')
+            dispatch({ type: RESTORE_DELETED_USER_RESET });
+        }
+    }, [dispatch, alert, error, isRestored, history]);
 
     const restoreUserHandler = (id) => {
-        // setShowConfirmation(true);
-        // setOrderIdToRestore(id);
+        setShowConfirmation(true);
+        setOrderIdToRestore(id);
     }
 
     const confirmRestoreHandler = () => {
-        // dispatch(restoreDeletedOrderAction(orderIdToRestore));
-        // setShowConfirmation(false);
+        dispatch(restoreDeletedUserAction(userIdToRestore));
+        setShowConfirmation(false);
     }
 
     const setUsers = () => {
@@ -118,13 +118,13 @@ const DeletedUsers = ({ history }) => {
                         />
                     )}
 
-                    {/* <Confirm
+                    <Confirm
                         show={showConfirmation}
                         onClose={() => setShowConfirmation(false)}
                         onConfirm={confirmRestoreHandler}
                         confirmType={CONFIRM_TYPE.RESTORE}
-                        type={CONFIRM_TO.ORDER}
-                    /> */}
+                        type={CONFIRM_TO.USER}
+                    />
                 </Fragment>
             </div>
         </div>
@@ -132,4 +132,4 @@ const DeletedUsers = ({ history }) => {
   )
 }
 
-export default DeletedUsers
+export default DeletedUsers;

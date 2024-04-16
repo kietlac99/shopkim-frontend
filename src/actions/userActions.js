@@ -40,6 +40,10 @@ import {
     DELETED_USERS_REQUEST,
     DELETED_USERS_SUCCESS,
     DELETED_USERS_FAIL,
+    RESTORE_DELETED_USER_REQUEST,
+    RESTORE_DELETED_USER_SUCCESS,
+    RESTORE_DELETED_USER_FAIL,
+    RESTORE_DELETED_USER_RESET,
     CLEAR_ERRORS
 } from '../constants/userConstants';
 
@@ -516,6 +520,40 @@ export const getDeletedUsersAction = () => async (dispatch) => {
             type: DELETED_USERS_FAIL,
             payload: error.response.data.errors[0].message || error.response.data.errors[0].msg
         })
+    }
+}
+
+export const restoreDeletedUserAction = (userId) => async (dispatch) => {
+    try {
+        dispatch({ type: RESTORE_DELETED_USER_REQUEST });
+
+        const token = localStorage.getItem('userToken');
+
+        if (token === null) throw new Error();
+
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `${token}`
+        };
+
+        const { data } = await axios({
+            url: `${SHOP_KIM_API}/api/v1/auth/admin/restore-deleted-users`,
+            method: 'POST',
+            data: { 
+                keyword: userId
+            },
+            headers
+        });
+
+        dispatch({ 
+            type: RESTORE_DELETED_USER_SUCCESS,
+            payload: data.success
+        });
+    } catch (error) {
+        dispatch({
+            type: RESTORE_DELETED_USER_FAIL,
+            payload: error.response.data.errors[0].message || error.response.data.errors[0].msg
+        });
     }
 }
 
