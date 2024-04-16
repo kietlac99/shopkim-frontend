@@ -32,7 +32,7 @@ const DeletedUsers = ({ history }) => {
 
         if (isRestored) {
             alert.success('Người dùng khôi phục thành công!');
-            history.push('/admin/user/deleted')
+            history.push('/admin/users/deleted')
             dispatch({ type: RESTORE_DELETED_USER_RESET });
         }
     }, [dispatch, alert, error, isRestored, history]);
