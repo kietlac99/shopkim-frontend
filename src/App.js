@@ -19,6 +19,7 @@ import UpdateUser from "./components/admin/UpdateUser";
 import ProductReviews from "./components/admin/ProductReviews";
 import DeletedOrders from './components/admin/DeletedOrders';
 import DeletedUsers from "./components/admin/DeletedUsers";
+import DeletedProducts from "./components/admin/DeletedProducts";
 
 // Cart Imports
 import Cart from "./components/cart/Cart";
@@ -112,6 +113,7 @@ function App() {
 
         <ProtectedRoute path="/dashboard" isAdmin={true} component={Dashboard} exact />
         <ProtectedRoute path="/admin/products" isAdmin={true} component={ProductsList} exact />
+        <ProtectedRoute path="/admin/products/deleted" isAdmin={true} component={DeletedProducts} exact />
         <ProtectedRoute path="/admin/product" isAdmin={true} component={NewProduct} exact />
         <ProtectedRoute path="/admin/product/:id" isAdmin={true} component={UpdateProduct} exact />
         <ProtectedRoute path="/admin/orders" isAdmin={true} component={OrdersList} exact />
