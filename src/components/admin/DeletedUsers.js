@@ -39,7 +39,7 @@ const DeletedUsers = ({ history }) => {
 
     const restoreUserHandler = (id) => {
         setShowConfirmation(true);
-        setOrderIdToRestore(id);
+        setUserIdToRestore(id);
     }
 
     const confirmRestoreHandler = () => {
