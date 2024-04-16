@@ -17,6 +17,8 @@ import ProcessOrder from "./components/admin/ProcessOrder";
 import UsersList from "./components/admin/UsersList";
 import UpdateUser from "./components/admin/UpdateUser";
 import ProductReviews from "./components/admin/ProductReviews";
+import DeletedOrders from './components/admin/DeletedOrders';
+import DeletedUsers from "./components/admin/DeletedUsers";
 
 // Cart Imports
 import Cart from "./components/cart/Cart";
@@ -33,7 +35,6 @@ import UpdateProfile from "./components/user/UpdateProfile";
 import UpdatePassword from "./components/user/UpdatePassword";
 import ForgotPassword from "./components/user/ForgotPassword";
 import NewPassword from "./components/user/NewPassword";
-import DeletedOrders from './components/admin/DeletedOrders';
 
 // Order Imports
 import ListOrders from "./components/order/ListOrders";
@@ -118,6 +119,7 @@ function App() {
         <ProtectedRoute path="/admin/orders/deleted" isAdmin={true} component={DeletedOrders} exact />
         <ProtectedRoute path="/admin/users" isAdmin={true} component={UsersList} exact />
         <ProtectedRoute path="/admin/user/:id" isAdmin={true} component={UpdateUser} exact />
+        <ProtectedRoute path="/admin/users/deleted" isAdmin={true} component={DeletedUsers} exact />
         <ProtectedRoute path="/admin/reviews" isAdmin={true} component={ProductReviews} exact />
 
         {!loading && (!isAuthenticated || user.role !== 'admin') && (
