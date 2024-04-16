@@ -41,6 +41,9 @@ import {
     REGISTER_USER_CONFIRM_REQUEST,
     REGISTER_USER_CONFIRM_SUCCESS,
     REGISTER_USER_CONFIRM_FAIL,
+    DELETED_USERS_REQUEST,
+    DELETED_USERS_SUCCESS,
+    DELETED_USERS_FAIL,
     CLEAR_ERRORS
 } from '../constants/userConstants';
 
@@ -292,6 +295,36 @@ export const userDetailsReducer = (state = { user: {} }, action) => {
                 error: null
             }
             
+        default:
+            return state;
+    }
+}
+
+export const deletedUsersReducer = (state = { users : [] }, action) => {
+    switch (action.type) {
+        case DELETED_USERS_REQUEST:
+            return {
+                loading: true
+            }
+
+        case DELETED_USERS_SUCCESS:
+            return {
+                loading: false,
+                users: action.payload
+            }
+        
+        case DELETED_USERS_FAIL:
+            return {
+                loading: false,
+                error: action.payload
+            }
+
+        case CLEAR_ERRORS:
+            return {
+                ...state,
+                error: null
+            }
+
         default:
             return state;
     }
