@@ -12,7 +12,7 @@ import { getDeletedUsersAction, clearErrors } from '../../actions/userActions';
 //import { RESTORE_DELETED_ORDER_RESET } from '../../constants/orderConstants';
 import { CONFIRM_TYPE, CONFIRM_TO } from '../../config';
 
-const DeletedUsers = () => {
+const DeletedUsers = ({ history }) => {
     const alert = useAlert();
     const dispatch = useDispatch();
 
