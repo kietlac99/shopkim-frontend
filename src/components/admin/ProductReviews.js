@@ -25,10 +25,6 @@ const ProductReviews = () => {
     const [reviewIdToDelete, setReviewIdToDelete] = useState(null);
 
     useEffect(() => {
-        if ((typeof productId === 'string' || productId instanceof String) && productId.length) {
-            dispatch(getProductReviewsAction(productId));
-        }
-
         if (error) {
             alert.error(error);
             dispatch(clearErrors());
