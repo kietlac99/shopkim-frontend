@@ -20,6 +20,7 @@ import ProductReviews from "./components/admin/ProductReviews";
 import DeletedOrders from './components/admin/DeletedOrders';
 import DeletedUsers from "./components/admin/DeletedUsers";
 import DeletedProducts from "./components/admin/DeletedProducts";
+import DeletedReviews from "./components/admin/DeletedReviews";
 
 // Cart Imports
 import Cart from "./components/cart/Cart";
@@ -123,6 +124,7 @@ function App() {
         <ProtectedRoute path="/admin/user/:id" isAdmin={true} component={UpdateUser} exact />
         <ProtectedRoute path="/admin/users/deleted" isAdmin={true} component={DeletedUsers} exact />
         <ProtectedRoute path="/admin/reviews" isAdmin={true} component={ProductReviews} exact />
+        <ProtectedRoute path="/admin/reviews/deleted" isAdmin={true} component={DeletedReviews} exact />
 
         {!loading && (!isAuthenticated || user.role !== 'admin') && (
           <Footer />

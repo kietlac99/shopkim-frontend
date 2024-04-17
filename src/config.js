@@ -4,7 +4,8 @@ export const SHOP_KIM_API = 'https://shopkim.onrender.com';
 export const DELETED_TYPE = {
     'DELETED_ORDER': 'DELETED_ORDER',
     'DELETED_USER': 'DELETED_USER',
-    'DELETED_PRODUCT': 'DELETED_PRODUCT'
+    'DELETED_PRODUCT': 'DELETED_PRODUCT',
+    'DELETED_REVIEW': 'DELETED_REVIEW'
 };
 
 export const CONFIRM_TYPE = {

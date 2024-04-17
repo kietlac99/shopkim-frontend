@@ -34,7 +34,13 @@ import {
   DELETED_PRODUCTS_SUCCESS,
   RESTORE_DELETED_PRODUCT_REQUEST,
   RESTORE_DELETED_PRODUCT_SUCCESS,
-  RESTORE_DELETED_PRODUCT_FAIL
+  RESTORE_DELETED_PRODUCT_FAIL,
+  DELETED_REVIEWS_REQUEST,
+  DELETED_REVIEWS_SUCCESS,
+  DELETED_REVIEWS_FAIL,
+  RESTORE_DELETED_REVIEW_REQUEST,
+  RESTORE_DELETED_REVIEW_SUCCESS,
+  RESTORE_DELETED_REVIEW_FAIL
 } from '../constants/productConstants';
 
 import { SHOP_KIM_API, DELETED_TYPE } from '../config';
@@ -390,6 +396,76 @@ export const restoreDeletedProductAction = (productId) => async (dispatch) => {
   } catch (error) {
       dispatch({
           type: RESTORE_DELETED_PRODUCT_FAIL,
+          payload: error.response.data.errors[0].message || error.response.data.errors[0].msg
+      });
+  }
+}
+
+export const getDeletedReviewsAction = () => async (dispatch) => {
+  try {
+      dispatch({ type: DELETED_REVIEWS_REQUEST });
+
+      const token = localStorage.getItem('userToken');
+
+      if (token === null) throw new Error();
+
+      const headers = {
+          'Content-Type': 'application/json',
+          'Authorization': `${token}`
+      };
+
+      const { data } = await axios({
+          url: `${SHOP_KIM_API}/api/v1/redis/scan`,
+          method: 'POST',
+          data: { 
+              scanType: DELETED_TYPE.DELETED_REVIEW, 
+              keyword: ''
+          },
+          headers
+      });
+
+      dispatch({
+          type: DELETED_REVIEWS_SUCCESS,
+          payload: data.payload
+      })
+
+  } catch (error) {
+      dispatch({
+          type: DELETED_REVIEWS_FAIL,
+          payload: error.response.data.errors[0].message || error.response.data.errors[0].msg
+      })
+  }
+}
+
+export const restoreDeletedReviewAction = (productId, reviewId) => async (dispatch) => {
+  try {
+      dispatch({ type: RESTORE_DELETED_REVIEW_REQUEST });
+
+      const token = localStorage.getItem('userToken');
+
+      if (token === null) throw new Error();
+
+      const headers = {
+          'Content-Type': 'application/json',
+          'Authorization': `${token}`
+      };
+
+      const { data } = await axios({
+          url: `${SHOP_KIM_API}/api/v1/product/restore-deleted-reviews`,
+          method: 'POST',
+          data: { 
+            keyword: `${productId}_${reviewId}`
+          },
+          headers
+      });
+
+      dispatch({ 
+          type: RESTORE_DELETED_REVIEW_SUCCESS,
+          payload: data.success
+      });
+  } catch (error) {
+      dispatch({
+          type: RESTORE_DELETED_REVIEW_FAIL,
           payload: error.response.data.errors[0].message || error.response.data.errors[0].msg
       });
   }
