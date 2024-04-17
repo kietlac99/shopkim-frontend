@@ -34,9 +34,10 @@ const ProductReviews = () => {
         if(isDeleted) {
             alert.success('Đánh giá xóa thành công!');
             dispatch({ type: DELETE_REVIEW_RESET });
+            dispatch(getProductReviewsAction(productId));
         }
 
-    }, [dispatch, alert, error, isDeleted]);
+    }, [dispatch, alert, error, isDeleted, productId]);
 
     const deleteReviewHandler = (id) => {
         //dispatch(deleteReviewAction(id, productId));
