@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect } from "react";
 import MetaData from "../layout/MetaData";
 
 import { useAlert } from "react-alert";
@@ -14,7 +14,7 @@ const RegisterConfirm = ({ history, match }) => {
 
   useEffect(() => {
     dispatch(registerConfirmAction(match.params.email)); 
-  }, [match.params.email]);
+  }, [match.params.email, dispatch]);
 
   useEffect(() => {
     if (error) {

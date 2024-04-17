@@ -8,8 +8,8 @@ import Confirm from '../layout/Confirm';
 
 import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
-import { getDeletedProductsAction, /*restoreDeletedProductAction,*/ clearErrors } from '../../actions/productActions';
-// import { RESTORE_DELETED_PRODUCT_RESET } from '../../constants/productConstants';
+import { getDeletedProductsAction, restoreDeletedProductAction, clearErrors } from '../../actions/productActions';
+import { RESTORE_DELETED_PRODUCT_RESET } from '../../constants/productConstants';
 import { CONFIRM_TYPE, CONFIRM_TO } from '../../config';
 
 const DeletedProducts = ({ history }) => {
@@ -17,7 +17,7 @@ const DeletedProducts = ({ history }) => {
     const dispatch = useDispatch();
 
     const { loading, error, products } = useSelector(state => state.deletedProducts);
-    // const { isRestored } = useSelector(state => state.user);
+    const { isRestored } = useSelector(state => state.user);
 
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [productIdToRestore, setProductIdToRestore] = useState(null);
@@ -30,21 +30,21 @@ const DeletedProducts = ({ history }) => {
             dispatch(clearErrors());
         }
 
-        // if (isRestored) {
-        //     alert.success('Sản phẩm khôi phục thành công!');
-        //     history.push('/admin/products/deleted')
-        //     dispatch({ type: RESTORE_DELETED_USER_RESET });
-        // }
-    }, [dispatch, alert, error, /*isRestored*/, history]);
+        if (isRestored) {
+            alert.success('Sản phẩm khôi phục thành công!');
+            history.push('/admin/products/deleted')
+            dispatch({ type: RESTORE_DELETED_PRODUCT_RESET });
+        }
+    }, [dispatch, alert, error, isRestored, history]);
 
     const restoreProductHandler = (id) => {
-        // setShowConfirmation(true);
-        // setProductIdToRestore(id);
+        setShowConfirmation(true);
+        setProductIdToRestore(id);
     }
 
     const confirmRestoreHandler = () => {
-        // dispatch(restoreDeletedProductAction(productIdToRestore));
-        // setShowConfirmation(false);
+        dispatch(restoreDeletedProductAction(productIdToRestore));
+        setShowConfirmation(false);
     }
 
     const setProducts = () => {
@@ -120,13 +120,13 @@ const DeletedProducts = ({ history }) => {
                         />
                     )}
 
-                    {/* <Confirm
+                    <Confirm
                         show={showConfirmation}
                         onClose={() => setShowConfirmation(false)}
                         onConfirm={confirmRestoreHandler}
                         confirmType={CONFIRM_TYPE.RESTORE}
                         type={CONFIRM_TO.PRODUCT}
-                    /> */}
+                    />
                 </Fragment>
             </div>
         </div>
