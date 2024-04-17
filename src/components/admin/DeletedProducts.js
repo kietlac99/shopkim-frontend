@@ -17,7 +17,7 @@ const DeletedProducts = ({ history }) => {
     const dispatch = useDispatch();
 
     const { loading, error, products } = useSelector(state => state.deletedProducts);
-    const { isRestored } = useSelector(state => state.user);
+    const { isRestored } = useSelector(state => state.product);
 
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [productIdToRestore, setProductIdToRestore] = useState(null);
