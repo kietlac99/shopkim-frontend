@@ -38,6 +38,13 @@ import {
     RESTORE_DELETED_PRODUCT_SUCCESS,
     RESTORE_DELETED_PRODUCT_FAIL,
     RESTORE_DELETED_PRODUCT_RESET,
+    DELETED_REVIEWS_REQUEST,
+    DELETED_REVIEWS_SUCCESS,
+    DELETED_REVIEWS_FAIL,
+    RESTORE_DELETED_REVIEW_REQUEST,
+    RESTORE_DELETED_REVIEW_SUCCESS,
+    RESTORE_DELETED_REVIEW_RESET,
+    RESTORE_DELETED_REVIEW_FAIL,
     CLEAR_ERRORS
 } from '../constants/productConstants';
 
@@ -302,6 +309,7 @@ export const reviewReducer = (state = {}, action ) => {
     switch (action.type) {
 
         case DELETE_REVIEW_REQUEST:
+        case RESTORE_DELETED_REVIEW_REQUEST:
             return {
                 ...state,
                 loading: true
@@ -313,6 +321,13 @@ export const reviewReducer = (state = {}, action ) => {
                 loading: false,
                 isDeleted: action.payload
             }
+    
+        case RESTORE_DELETED_REVIEW_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                isRestored: action.payload
+            }
         
         case DELETE_REVIEW_FAIL:
             return {
@@ -320,10 +335,23 @@ export const reviewReducer = (state = {}, action ) => {
                 error: action.payload
             }
 
+        case RESTORE_DELETED_REVIEW_FAIL:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
+            }
+
         case DELETE_REVIEW_RESET:
             return {
                 ...state,
                 isDeleted: false
+            }
+
+        case RESTORE_DELETED_REVIEW_RESET:
+            return {
+                ...state,
+                isRestored: false
             }
 
         case CLEAR_ERRORS:
@@ -351,6 +379,36 @@ export const deletedProductsReducer = (state = { products : [] }, action) => {
             }
         
         case DELETED_PRODUCTS_FAIL:
+            return {
+                loading: false,
+                error: action.payload
+            }
+
+        case CLEAR_ERRORS:
+            return {
+                ...state,
+                error: null
+            }
+
+        default:
+            return state;
+    }
+}
+
+export const deletedReviewsReducer = (state = { reviews : [] }, action) => {
+    switch (action.type) {
+        case DELETED_REVIEWS_REQUEST:
+            return {
+                loading: true
+            }
+
+        case DELETED_REVIEWS_SUCCESS:
+            return {
+                loading: false,
+                products: action.payload
+            }
+        
+        case DELETED_REVIEWS_FAIL:
             return {
                 loading: false,
                 error: action.payload
