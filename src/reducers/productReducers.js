@@ -34,6 +34,10 @@ import {
     DELETED_PRODUCTS_REQUEST,
     DELETED_PRODUCTS_SUCCESS,
     DELETED_PRODUCTS_FAIL,
+    RESTORE_DELETED_PRODUCT_REQUEST,
+    RESTORE_DELETED_PRODUCT_SUCCESS,
+    RESTORE_DELETED_PRODUCT_FAIL,
+    RESTORE_DELETED_PRODUCT_RESET,
     CLEAR_ERRORS
 } from '../constants/productConstants';
 
@@ -123,6 +127,7 @@ export const productReducer = (state = {}, action ) => {
 
         case DELETE_PRODUCT_REQUEST:
         case UPDATE_PRODUCT_REQUEST:
+        case RESTORE_DELETED_PRODUCT_REQUEST:
             return {
                 ...state,
                 loading: true
@@ -141,11 +146,25 @@ export const productReducer = (state = {}, action ) => {
                 loading: false,
                 isUpdated: action.payload
             }
+
+        case RESTORE_DELETED_PRODUCT_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                isRestored: action.payload
+            }
         
         case DELETE_PRODUCT_FAIL:
         case UPDATE_PRODUCT_FAIL:
             return {
                 ...state,
+                error: action.payload
+            }
+
+        case RESTORE_DELETED_PRODUCT_FAIL:
+            return {
+                ...state,
+                loading: false,
                 error: action.payload
             }
 
@@ -159,6 +178,12 @@ export const productReducer = (state = {}, action ) => {
             return {
                 ...state,
                 isUpdated: false
+            }
+
+        case RESTORE_DELETED_PRODUCT_RESET:
+            return {
+                ...state,
+                isRestored: false
             }
 
         case CLEAR_ERRORS:

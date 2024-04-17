@@ -31,7 +31,10 @@ import {
   CLEAR_ERRORS,
   DELETED_PRODUCTS_REQUEST,
   DELETED_PRODUCTS_FAIL,
-  DELETED_PRODUCTS_SUCCESS
+  DELETED_PRODUCTS_SUCCESS,
+  RESTORE_DELETED_PRODUCT_REQUEST,
+  RESTORE_DELETED_PRODUCT_SUCCESS,
+  RESTORE_DELETED_PRODUCT_FAIL
 } from '../constants/productConstants';
 
 import { SHOP_KIM_API, DELETED_TYPE } from '../config';
@@ -355,6 +358,40 @@ export const getDeletedProductsAction = () => async (dispatch) => {
           type: DELETED_PRODUCTS_FAIL,
           payload: error.response.data.errors[0].message || error.response.data.errors[0].msg
       })
+  }
+}
+
+export const restoreDeletedProductAction = (productId) => async (dispatch) => {
+  try {
+      dispatch({ type: RESTORE_DELETED_PRODUCT_REQUEST });
+
+      const token = localStorage.getItem('userToken');
+
+      if (token === null) throw new Error();
+
+      const headers = {
+          'Content-Type': 'application/json',
+          'Authorization': `${token}`
+      };
+
+      const { data } = await axios({
+          url: `${SHOP_KIM_API}/api/v1/product/restore-deleted-product`,
+          method: 'POST',
+          data: { 
+            keyword: productId
+          },
+          headers
+      });
+
+      dispatch({ 
+          type: RESTORE_DELETED_PRODUCT_SUCCESS,
+          payload: data.success
+      });
+  } catch (error) {
+      dispatch({
+          type: RESTORE_DELETED_PRODUCT_FAIL,
+          payload: error.response.data.errors[0].message || error.response.data.errors[0].msg
+      });
   }
 }
 

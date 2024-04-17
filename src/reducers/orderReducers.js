@@ -231,12 +231,6 @@ export const orderReducer = (state = {}, action ) => {
                 isRestored: false
             }
 
-        case RESTORE_DELETED_ORDER_SUCCESS:
-            return {
-                ...state,
-                isRestored: false
-            }
-
         case CLEAR_ERRORS:
             return {
                 ...state,
