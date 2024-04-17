@@ -405,7 +405,7 @@ export const deletedReviewsReducer = (state = { reviews : [] }, action) => {
         case DELETED_REVIEWS_SUCCESS:
             return {
                 loading: false,
-                products: action.payload
+                reviews: action.payload
             }
         
         case DELETED_REVIEWS_FAIL:
