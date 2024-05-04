@@ -88,19 +88,21 @@ const Login = ({ history, location }) => {
                     className="btn btn-block py-3"
                   >
                     ĐĂNG NHẬP
-                  </button>
-
-                  <GoogleLogin
-                    clientId={CLIENT_ID}
-                    buttonText="Google"
-                    onSuccess={responseSuccessGoogle}
-                    onFailure={responseErrorGoogle}
-                    cookiePolicy={'single_host_origin'}
-                  />,
+                  </button>             
 
                   <Link to="/register" className="float-right mt-3">Tài khoản mới?</Link>
                 </form>
             </div>
+            
+           <div className="col-2 col-lg-1 d-flex align-items-center justify-content-center">
+              <GoogleLogin
+                clientId={CLIENT_ID}
+                buttonText="Google"
+                onSuccess={responseSuccessGoogle}
+                onFailure={responseErrorGoogle}
+                cookiePolicy={'single_host_origin'}
+              />
+            </div> 
           </div>
 
         </Fragment>
