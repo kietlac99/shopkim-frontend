@@ -92,7 +92,7 @@ const Login = ({ history, location }) => {
 
                   <GoogleLogin
                     clientId={CLIENT_ID}
-                    buttonText="Đăng nhập bằng google"
+                    buttonText="Google"
                     onSuccess={responseSuccessGoogle}
                     onFailure={responseErrorGoogle}
                     cookiePolicy={'single_host_origin'}
