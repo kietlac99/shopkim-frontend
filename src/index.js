@@ -7,6 +7,8 @@ import store from './store';
 
 import { positions, transitions, Provider as AlertProvider } from "react-alert";
 import AlertTemplate from "react-alert-template-basic";
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { CLIENT_ID } from './config';
 
 const options = {
   timeout: 5000,
@@ -17,8 +19,10 @@ const options = {
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store} >
-    <AlertProvider template={AlertTemplate} {...options}>
-      <App />
-    </AlertProvider>
+    <GoogleOAuthProvider clientId={CLIENT_ID}>
+      <AlertProvider template={AlertTemplate} {...options}>
+        <App />
+      </AlertProvider>
+    </GoogleOAuthProvider>
   </Provider>
 );

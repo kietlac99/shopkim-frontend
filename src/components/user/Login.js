@@ -8,8 +8,7 @@ import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
 import { loginAction, clearErrors } from '../../actions/userActions';
 
-import { CLIENT_ID } from '../../config';
-import GoogleLogin from 'react-google-login';
+import { GoogleLogin } from '@react-oauth/google';
 
 
 const Login = ({ history, location }) => {
@@ -93,12 +92,13 @@ const Login = ({ history, location }) => {
                   <div className="text-center mt-3">
                     <p>Hoặc đăng nhập bằng cách khác</p>
                     <GoogleLogin
-                      clientId={CLIENT_ID}
-                      buttonText="Google"
-                      onSuccess={responseSuccessGoogle}
-                      onFailure={responseErrorGoogle}
-                      cookiePolicy={'single_host_origin'}
-                    />
+                      onSuccess={credentialResponse => {
+                        console.log(credentialResponse);
+                      }}
+                      onError={() => {
+                        console.log('Login Failed');
+                      }}
+                    />;
                   </div>
 
                   <Link to="/register" className="float-right mt-3">Tài khoản mới?</Link>
