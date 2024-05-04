@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginAction, clearErrors } from '../../actions/userActions';
 
 import { GoogleLogin } from '@react-oauth/google';
-import jwtDecode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 
 
 const Login = ({ history, location }) => {
