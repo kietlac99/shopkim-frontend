@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginAction, clearErrors } from '../../actions/userActions';
 
 import { GoogleLogin } from '@react-oauth/google';
+import jwtDecode from 'jwt-decode';
 
 
 const Login = ({ history, location }) => {
@@ -40,7 +41,8 @@ const Login = ({ history, location }) => {
   }
 
   const responseSuccessGoogle = (response) => {
-    console.log(response);
+    const credentialDecode = jwtDecode(response.credential);
+    console.log(credentialDecode);
   };
 
   const responseErrorGoogle = (response) => {
@@ -93,7 +95,7 @@ const Login = ({ history, location }) => {
                     <p>Hoặc đăng nhập bằng cách khác</p>
                     <GoogleLogin
                       onSuccess={credentialResponse => {
-                        console.log(credentialResponse);
+                        responseSuccessGoogle(credentialResponse);
                       }}
                       onError={() => {
                         console.log('Login Failed');
