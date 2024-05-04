@@ -51,15 +51,15 @@ const Login = ({ history, location }) => {
       provider: 'google',
       accountId: credentialDecode.sub
     }
-    const headers = {
-      'Content-Type': 'application/json'
-    };
-    axios({
-      method: "POST",
-      url: `${SHOP_KIM_API}/api/v1/auth/google-login`,
-      headers,
-      data: {}
-    })
+    // const headers = {
+    //   'Content-Type': 'application/json'
+    // };
+    // axios({
+    //   method: "POST",
+    //   url: `${SHOP_KIM_API}/api/v1/auth/google-login`,
+    //   headers,
+    //   data: {}
+    // })
   };
 
   const responseErrorGoogle = () => {
