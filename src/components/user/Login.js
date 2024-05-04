@@ -8,6 +8,9 @@ import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
 import { loginAction, clearErrors } from '../../actions/userActions';
 
+import { CLIENT_ID } from '../../config';
+import GoogleLogin from 'react-google-login';
+
 
 const Login = ({ history, location }) => {
   const [email, setEmail] = useState(``);
@@ -36,6 +39,14 @@ const Login = ({ history, location }) => {
     e.preventDefault();
     dispatch(loginAction(email, password));
   }
+
+  const responseSuccessGoogle = (response) => {
+    console.log(response);
+  };
+
+  const responseErrorGoogle = (response) => {
+    
+  };
 
   return (
     <Fragment>
@@ -78,6 +89,14 @@ const Login = ({ history, location }) => {
                   >
                     ĐĂNG NHẬP
                   </button>
+
+                  <GoogleLogin
+                    clientId={CLIENT_ID}
+                    buttonText="Đăng nhập bằng google"
+                    onSuccess={responseSuccessGoogle}
+                    onFailure={responseErrorGoogle}
+                    cookiePolicy={'single_host_origin'}
+                  />,
 
                   <Link to="/register" className="float-right mt-3">Tài khoản mới?</Link>
                 </form>
