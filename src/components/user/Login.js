@@ -6,12 +6,10 @@ import MetaData from "../layout/MetaData";
 
 import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
-import { loginAction, clearErrors } from '../../actions/userActions';
-import { SHOP_KIM_API } from '../../config';
+import { loginAction, googleLoginAction, clearErrors } from '../../actions/userActions';
 
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
-import axios from "axios";
 
 
 const Login = ({ history, location }) => {
@@ -44,22 +42,13 @@ const Login = ({ history, location }) => {
 
   const responseSuccessGoogle = (response) => {
     const credentialDecode = jwtDecode(response.credential);
-    console.log(credentialDecode.email);
     const data = {
       name: credentialDecode.name,
       email: credentialDecode.email,
       provider: 'google',
-      accountId: credentialDecode.sub
-    }
-    // const headers = {
-    //   'Content-Type': 'application/json'
-    // };
-    // axios({
-    //   method: "POST",
-    //   url: `${SHOP_KIM_API}/api/v1/auth/google-login`,
-    //   headers,
-    //   data: {}
-    // })
+      provideAccountId: credentialDecode.sub
+    };
+    dispatch(googleLoginAction(data));
   };
 
   const responseErrorGoogle = () => {
