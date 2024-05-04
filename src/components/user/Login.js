@@ -45,7 +45,7 @@ const Login = ({ history, location }) => {
   };
 
   const responseErrorGoogle = (response) => {
-    
+    console.log(response);
   };
 
   return (
