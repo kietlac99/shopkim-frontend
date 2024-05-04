@@ -556,6 +556,36 @@ export const restoreDeletedUserAction = (userId) => async (dispatch) => {
     }
 }
 
+// Google login
+export const googleLoginAction = (data) => async(dispatch) => {
+    try {
+
+        dispatch({ type: LOGIN_REQUEST });
+
+        const headers = {
+            'Content-Type': 'application/json'
+        };
+
+        axios({
+            method: "POST",
+            url: `${SHOP_KIM_API}/api/v1/auth/google-login`,
+            headers,
+            data
+        });
+
+        dispatch({
+            type: LOGIN_SUCCESS,
+            payload: data.payload
+        })
+
+    } catch (error) {
+        dispatch({
+            type: LOGIN_FAIL,
+            payload: error.response.data.errors[0].message || error.response.data.errors[0].msg
+        })
+    }
+}
+
 export const clearErrors = () => async (dispatch) => {
     dispatch({
       type: CLEAR_ERRORS
