@@ -557,20 +557,31 @@ export const restoreDeletedUserAction = (userId) => async (dispatch) => {
 }
 
 // Google login
-export const googleLoginAction = (data) => async(dispatch) => {
+export const googleLoginAction = (googleData) => async(dispatch) => {
     try {
-
-        dispatch({ type: LOGIN_REQUEST });
 
         const headers = {
             'Content-Type': 'application/json'
         };
 
-        axios({
+        const { data: googleAccount } = await axios({
             method: "POST",
             url: `${SHOP_KIM_API}/api/v1/auth/google-login`,
             headers,
-            data
+            data: googleData
+        });
+
+        const token = googleAccount.payload;
+        localStorage.setItem('userToken', token);
+
+        dispatch({ type: LOGIN_REQUEST });
+
+        const { data } = await axios({
+            url: `${SHOP_KIM_API}/api/v1/auth/me`,
+            method: 'GET',
+            headers: {
+                Authorization: `${token}`
+            }
         });
 
         dispatch({
