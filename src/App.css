@@ -648,7 +648,3 @@ ul.CTAs a {
 .facebook-login-button:hover {
   background-color: #405a91;
 }
-
-.facebook-login-button i {
-  margin-right: 10px; /* Khoảng cách giữa biểu tượng và văn bản */
-}
