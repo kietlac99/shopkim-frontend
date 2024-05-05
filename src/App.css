@@ -632,3 +632,23 @@ ul.CTAs a {
   align-items: center;
   gap: 10px; /* Khoảng cách giữa các nút */
 }
+
+.facebook-login-button {
+  background-color: #4267b2;
+  color: #fff;
+  font-size: 16px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.facebook-login-button:hover {
+  background-color: #405a91;
+}
+
+.facebook-login-button i {
+  margin-right: 10px; /* Khoảng cách giữa biểu tượng và văn bản */
+}
