@@ -122,7 +122,10 @@ const Login = ({ history, location }) => {
                           onProfileSuccess={(response) => {
                               console.log('Get Profile Success!', response);
                           }}
-                      />
+                          className="facebook-login-button"
+                      >
+                        <i className="fab fa-facebook-f" /> Đăng nhập bằng Facebook
+                      </FacebookLogin>
                     </div>
                   </div>
 
