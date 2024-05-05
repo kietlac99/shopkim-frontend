@@ -102,26 +102,28 @@ const Login = ({ history, location }) => {
 
                   <div className="text-center mt-3">
                     <p>Hoặc đăng nhập bằng cách khác</p>
-                    <GoogleLogin
-                      onSuccess={credentialResponse => {
-                        responseSuccessGoogle(credentialResponse);
-                      }}
-                      onError={() => {
-                        responseErrorGoogle();
-                      }}
-                    />
-                    <FacebookLogin
-                      appId={FB_CLIENT_ID}
-                      onSuccess={(response) => {
-                        console.log('Login Success!', response);
-                      }}
-                      onFail={(error) => {
-                        console.log('Login Failed!', error);
-                      }}
-                      onProfileSuccess={(response) => {
-                        console.log('Get Profile Success!', response);
-                      }}
-                    />
+                    <div className="social-login-container">
+                      <GoogleLogin
+                          onSuccess={credentialResponse => {
+                              responseSuccessGoogle(credentialResponse);
+                          }}
+                          onError={() => {
+                              responseErrorGoogle();
+                          }}
+                      />
+                      <FacebookLogin
+                          appId={FB_CLIENT_ID}
+                          onSuccess={(response) => {
+                              console.log('Login Success!', response);
+                          }}
+                          onFail={(error) => {
+                              console.log('Login Failed!', error);
+                          }}
+                          onProfileSuccess={(response) => {
+                              console.log('Get Profile Success!', response);
+                          }}
+                      />
+                    </div>
                   </div>
 
                   <Link to="/register" className="float-right mt-3">Tài khoản mới?</Link>

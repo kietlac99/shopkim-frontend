@@ -625,3 +625,10 @@ ul.CTAs a {
 .register-confirm-content {
   text-align: center;
 }
+
+.social-login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px; /* Khoảng cách giữa các nút */
+}
