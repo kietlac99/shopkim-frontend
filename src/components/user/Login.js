@@ -10,6 +10,9 @@ import { loginAction, googleLoginAction, clearErrors } from '../../actions/userA
 
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
+import FacebookLogin from '@greatsumini/react-facebook-login';
+
+import { FB_CLIENT_ID } from '../../config';
 
 
 const Login = ({ history, location }) => {
@@ -106,7 +109,19 @@ const Login = ({ history, location }) => {
                       onError={() => {
                         responseErrorGoogle();
                       }}
-                    />;
+                    />
+                    <FacebookLogin
+                      appId={FB_CLIENT_ID}
+                      onSuccess={(response) => {
+                        console.log('Login Success!', response);
+                      }}
+                      onFail={(error) => {
+                        console.log('Login Failed!', error);
+                      }}
+                      onProfileSuccess={(response) => {
+                        console.log('Get Profile Success!', response);
+                      }}
+                    />
                   </div>
 
                   <Link to="/register" className="float-right mt-3">Tài khoản mới?</Link>
