@@ -58,6 +58,25 @@ const Login = ({ history, location }) => {
     alert.error('Đăng nhập không thành công!');
   };
 
+  const responseSuccessFacebook = () => {
+    alert.success('Đăng nhập thành công!');
+  };
+
+  const responseErrorFacebook = (error) => {
+    alert.error('Đăng nhập không thành công! ', error);
+  };
+
+  const onProfileSuccessFacebook = (response) => {
+    const { name, email, id } = response;
+    const data = {
+      name,
+      email,
+      provider: 'facebook',
+      provideAccountId: id
+    };
+    dispatch(googleLoginAction(data));
+  };
+
   return (
     <Fragment>
       { loading ? <Loader /> : (
@@ -113,14 +132,14 @@ const Login = ({ history, location }) => {
                       />
                       <FacebookLogin
                           appId={FB_CLIENT_ID}
-                          onSuccess={(response) => {
-                              console.log('Login Success!', response);
+                          onSuccess={() => {
+                            responseSuccessFacebook();
                           }}
                           onFail={(error) => {
-                              console.log('Login Failed!', error);
+                            responseErrorFacebook(error);
                           }}
                           onProfileSuccess={(response) => {
-                              console.log('Get Profile Success!', response);
+                            onProfileSuccessFacebook(response);
                           }}
                           className="facebook-login-button"
                       >
