@@ -124,7 +124,7 @@ const Login = ({ history, location }) => {
                           }}
                           className="facebook-login-button"
                       >
-                        <i className="fab fa-facebook-f" /> Đăng nhập bằng Facebook
+                        <i className="fa fa-facebook-f" /> Đăng nhập bằng Facebook
                       </FacebookLogin>
                     </div>
                   </div>
