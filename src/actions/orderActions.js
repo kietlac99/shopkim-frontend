@@ -25,6 +25,9 @@ import {
     RESTORE_DELETED_ORDER_REQUEST,
     RESTORE_DELETED_ORDER_SUCCESS,
     RESTORE_DELETED_ORDER_FAIL,
+    STATISTICS_REVENUE_REQUEST,
+    STATISTICS_REVENUE_SUCCESS,
+    STATISTICS_REVENUE_FAIL,
     CLEAR_ERRORS,
 } from '../constants/orderConstants';
 
@@ -296,6 +299,37 @@ export const restoreDeletedOrderAction = (orderId) => async (dispatch) => {
             type: RESTORE_DELETED_ORDER_FAIL,
             payload: error.response.data.errors[0].message || error.response.data.errors[0].msg
         })
+    }
+}
+
+export const statisticsRevenueAction = (filterType) => async (dispatch) => {
+    try {
+        dispatch({ type: STATISTICS_REVENUE_REQUEST });
+        const token = localStorage.getItem('userToken');
+
+        if (token === null) throw new Error();
+
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `${token}`
+        };
+
+        const { data } = await axios({
+            url: `${SHOP_KIM_API}/api/v1/order/admin/revenue-statistics`,
+            method: 'POST',
+            data: filterType,
+            headers
+        });
+
+        dispatch({ 
+            type: STATISTICS_REVENUE_SUCCESS,
+            payload: data.payload
+        });
+    } catch (error) {
+        dispatch({
+            type: STATISTICS_REVENUE_FAIL,
+            payload: error.response.data.errors[0].message || error.response.data.errors[0].msg
+        });
     }
 }
 

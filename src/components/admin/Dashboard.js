@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import MetaData from '../layout/MetaData';
@@ -6,10 +6,15 @@ import Loader from '../layout/Loader';
 import Sidebar from './Sidebar';
 
 import { useDispatch, useSelector } from "react-redux";
+import { MDBDataTable } from 'mdbreact';
 
 import { getAdminProductsAction } from '../../actions/productActions';
-import { allOrdersAction } from '../../actions/orderActions';
+import { allOrdersAction, statisticsRevenueAction } from '../../actions/orderActions';
 import { allUsersAction } from '../../actions/userActions';
+
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import moment from 'moment';
 
 const Dashboard = () => {
 
@@ -17,8 +22,13 @@ const Dashboard = () => {
 
     const { products } = useSelector(state => state.products);
     const { users } = useSelector(state => state.allUsers);
+    const { statistic } = useSelector(state => state.statisticsRevenue);
     const { orders, totalAmount, loading } = useSelector(state => state.allOrders);
     const formattedAmount = totalAmount?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+
+    const [fromDate, setFromDate] = useState(null);
+    const [toDate, setToDate] = useState(null);
+    const [filterType, setFilterType] = useState('');
 
     let outOfStock = 0;
     products.forEach(product => {
@@ -32,6 +42,51 @@ const Dashboard = () => {
         dispatch(allOrdersAction());
         dispatch(allUsersAction());
     }, [dispatch]);
+
+    const filterOrdersByYear = (year) => {
+        const formattedYear = year.getFullYear().toString();
+        dispatch(statisticsRevenueAction({ year: formattedYear }));
+    };
+
+    // Function to filter orders based on selected month and year
+    const filterOrdersByMonth = (monthYear) => {
+        const formattedMonthYear = moment(monthYear).format('YYYY-MM');
+        dispatch(statisticsRevenueAction({ monthYear: formattedMonthYear }));
+    };
+
+    // Function to filter orders based on specific date range
+    const filterOrdersByDateRange = (fromDate, toDate) => {
+        const formattedFromDate = moment(fromDate).format('YYYY-MM-DD');
+        const formattedToDate = moment(toDate).format('YYYY-MM-DD');
+        dispatch(statisticsRevenueAction({ fromDate: formattedFromDate, toDate: formattedToDate }));
+    };
+
+    const setStatisticsRevenue = () => {
+        const data = {
+            columns: [
+                {
+                    label: 'Thời gian',
+                    field: 'date',
+                    sort: 'asc'
+                },
+                {
+                    label: 'Tổng tiền',
+                    field: 'totalMoney',
+                    sort: 'asc'
+                }
+            ],
+            rows: []
+        };
+
+        statistic.revenue.forEach(revenue => {
+            data.rows.push({
+                date: revenue._id,
+                totalMoney: revenue.totalMoney,
+            });
+        });
+
+        return data;
+    };
 
   return (
     <Fragment>
@@ -118,11 +173,89 @@ const Dashboard = () => {
                                 </div>
                             </div>
                         </div>
-                    </Fragment>
-                )}
 
-               
-                
+                        {/* Date Filter */}
+                        <div className="row pr-4">
+                                <div className="col-md-6 mb-3">
+                                    <h4>Chọn Ngày Tháng:</h4>
+                                    <select className="form-control mb-2" onChange={(e) => setFilterType(e.target.value)}>
+                                        <option value="">Chọn loại filter</option>
+                                        <option value="year">Theo Năm</option>
+                                        <option value="month">Theo Tháng Năm</option>
+                                        <option value="dateRange">Ngày Tháng Cụ Thể</option>
+                                    </select>
+                                    <div className='mb-2'>
+                                        {filterType === 'year' && (                                           
+                                            <DatePicker
+                                                selected={fromDate}
+                                                onChange={date => setFromDate(date)}
+                                                showYearPicker
+                                                dateFormat="yyyy"
+                                                placeholderText="Chọn năm"
+                                            />                                           
+                                        )}
+                                        {filterType === 'month' && (                                        
+                                            <DatePicker
+                                                selected={fromDate}
+                                                onChange={date => setFromDate(date)}
+                                                showMonthYearPicker
+                                                dateFormat="MM/yyyy"                                               
+                                                placeholderText="Chọn tháng năm"
+                                            />                                                                           
+                                        )}
+                                        {filterType === 'dateRange' && (
+                                            <>
+                                                <DatePicker
+                                                    selected={fromDate}
+                                                    onChange={date => setFromDate(date)}
+                                                    selectsStart
+                                                    startDate={fromDate}
+                                                    endDate={toDate}
+                                                    dateFormat="dd/MM/yyyy"
+                                                    placeholderText="Từ ngày"
+                                                />
+                                                <DatePicker
+                                                    selected={toDate}
+                                                    onChange={date => setToDate(date)}
+                                                    selectsEnd
+                                                    startDate={fromDate}
+                                                    endDate={toDate}
+                                                    minDate={fromDate}
+                                                    dateFormat="dd/MM/yyyy"
+                                                    placeholderText="Đến ngày"
+                                                />
+                                            </>
+                                        )}
+                                    </div>                                  
+                                    <button className="btn btn-primary mt-2" onClick={() => {
+                                        if (filterType === 'year') {
+                                            filterOrdersByYear(fromDate);
+                                        } else if (filterType === 'month') {
+                                            filterOrdersByMonth(fromDate);
+                                        } else if (filterType === 'dateRange') {
+                                            filterOrdersByDateRange(fromDate, toDate);
+                                        }
+                                    }}>Lọc</button>
+                                </div>
+                                {statistic?.revenue && statistic?.revenue?.length > 0 ? (
+                                    <div className="col-md-12">
+                                        <MDBDataTable 
+                                            data={setStatisticsRevenue()}
+                                            className='px-3'
+                                            bordered
+                                            striped
+                                            hover
+                                        />
+                                        <p className="mt-3">
+                                            Tổng doanh thu theo thống kê: {statistic.totalRevenue}
+                                        </p>
+                                    </div>
+                                ) : (
+                                    <p className='mt-5 text-center'>Không có thời gian thống kê doanh thu!</p>
+                                )}
+                            </div>
+                    </Fragment>
+                )}             
             </div>
         </div>
         

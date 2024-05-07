@@ -26,6 +26,9 @@ import {
     RESTORE_DELETED_ORDER_SUCCESS,
     RESTORE_DELETED_ORDER_RESET,
     RESTORE_DELETED_ORDER_FAIL,
+    STATISTICS_REVENUE_REQUEST,
+    STATISTICS_REVENUE_SUCCESS,
+    STATISTICS_REVENUE_FAIL,
     CLEAR_ERRORS
 } from '../constants/orderConstants';
 
@@ -259,6 +262,36 @@ export const deletedOrdersReducer = (state = { orders : [] }, action) => {
             return {
                 loading: false,
                 error: action.payload
+            }
+
+        case CLEAR_ERRORS:
+            return {
+                ...state,
+                error: null
+            }
+
+        default:
+            return state;
+    }
+}
+
+export const statisticsRevenueReducer = (state = { statistic: {} }, action) => {
+    switch(action.type) {
+        case STATISTICS_REVENUE_REQUEST:
+            return {
+                loading: true
+            }
+
+        case STATISTICS_REVENUE_SUCCESS:
+            return {
+                loading: false,
+                statistic: action.payload
+            }
+
+        case STATISTICS_REVENUE_FAIL:
+            return {
+                loading: false,
+                statistic: action.payload
             }
 
         case CLEAR_ERRORS:
