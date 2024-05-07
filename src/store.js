@@ -15,7 +15,14 @@ import {
 } from './reducers/productReducers';
 import { authReducer, userReducer, forgotPasswordReducer, allUsersReducer, userDetailsReducer, deletedUsersReducer } from './reducers/userReducers';
 import { cartReducer, locationReducer } from './reducers/cartReducers';
-import { newOrderReducer, myOrdersReducer, orderDetailsReducer, allOrdersReducer, orderReducer, deletedOrdersReducer } from './reducers/orderReducers';
+import { newOrderReducer,
+     myOrdersReducer, 
+     orderDetailsReducer, 
+     allOrdersReducer, 
+     orderReducer, 
+     deletedOrdersReducer,
+     statisticsRevenueReducer 
+    } from './reducers/orderReducers';
 
 const reducer = combineReducers({
     products: productsReducer,
@@ -40,7 +47,8 @@ const reducer = combineReducers({
     orderDetails: orderDetailsReducer,
     order: orderReducer,
     deletedOrders: deletedOrdersReducer,
-    newReview: newReviewReducer
+    newReview: newReviewReducer,
+    statisticsRevenue: statisticsRevenueReducer
 });
 
 let initialState = {
