@@ -177,9 +177,9 @@ const Dashboard = () => {
                         {/* Date Filter */}
                         <div className="row pr-4">
                                 <div className="col-md-6 mb-3">
-                                    <h4>Chọn Ngày Tháng:</h4>
+                                    <h4>Chọn Thời Gian:</h4>
                                     <select className="form-control mb-2" onChange={(e) => setFilterType(e.target.value)}>
-                                        <option value="">Chọn loại filter</option>
+                                        <option value="">Chọn loại thời gian</option>
                                         <option value="year">Theo Năm</option>
                                         <option value="month">Theo Tháng Năm</option>
                                         <option value="dateRange">Ngày Tháng Cụ Thể</option>
