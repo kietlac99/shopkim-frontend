@@ -1,38 +1,56 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const Product = ({ product, col }) => {
+const Product = ({ product, isShopping, isRelatedProduct = false }) => {
 
   const formattedPrice = product.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+  const imageUrl = product.images[0].url;
 
-  return (
-    <div className={`col-sm-12 col-md-6 col-lg-${col} my-3`}>
-      <div className="card p-3 rounded">
-        <img className="card-img-top mx-auto" alt={product.images[0].url} src={product.images[0].url} />
-        <div className="card-body d-flex flex-column">
-          <h5 className="card-title">
-            <Link to={`/product/${product._id}`}>{product.name}</Link>
-          </h5>
-          <div className="ratings mt-auto">
-            <div className="rating-outer">
-              <div
-                className="rating-inner"
-                style={{ width: `${(product.ratings / 5) * 100}%` }}
-              ></div>
-            </div>
-            <span id="no_of_reviews">({product.numOfReviews} Reviews)</span>
-          </div>
-          <p className="card-text">{formattedPrice}</p>
-          <Link
-            to={`/product/${product._id}`}
-            id="view_btn"
-            className="btn btn-block"
-          >
-            Chi tiết Sản phẩm
-          </Link>
+  const rating = product.ratings; // Điểm đánh giá của sản phẩm (ví dụ: 4.75 hoặc 4.5)
+
+  // Tính số sao dựa trên điểm đánh giá
+  const stars = [];
+  for (let i = 1; i <= 5; i++) {
+    if (rating >= i) {
+      stars.push(<i className="fa fa-star" key={i}></i>);
+    } else if (rating < i && rating > i - 1) {
+      stars.push(<i className="fa fa-star-half-o" key={i}></i>);
+    } else {
+      stars.push(<i className="fa fa-star-o" key={i}></i>);
+    }
+  }
+  const productItem = (
+    <div className="product__item">
+        <div className="product__item__pic set-bg" style={{ backgroundImage: `url('${imageUrl}')` }}>
+            <ul className="product__hover">
+                <li><Link to={`/product/${product._id}`}><img src="img/icon/search.png" alt=""/></Link></li>
+            </ul>
         </div>
-      </div>
+        <div className="product__item__text">
+            <h6>{product.name}</h6>
+            <Link to={`/product/${product._id}`} className="add-cart">{product.numOfReviews} Đánh giá</Link>
+            <div className="rating">
+              {stars}
+            </div>
+            <h5>{formattedPrice}</h5>
+        </div>
     </div>
+  );
+
+  return ( 
+    isRelatedProduct ? (
+      <div className="col-lg-3 col-md-6 col-sm-6 col-sm-6">
+        {productItem}
+      </div>
+    ) : !isShopping ? (
+        <div className="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
+        {productItem}
+      </div>   
+    ): (
+      <div className="col-lg-4 col-md-6 col-sm-6">
+        {productItem}
+      </div>
+    )
   );
 };
 

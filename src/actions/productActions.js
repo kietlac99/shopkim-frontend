@@ -51,7 +51,6 @@ export const getProducts = (keyword = '', currentPage = 1, price, category, rati
     dispatch({ type: ALL_PRODUCTS_REQUEST });
 
     let link = `${SHOP_KIM_API}/api/v1/product/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&ratings[gte]=${rating}`;
-
     if (category) {
       link = `${SHOP_KIM_API}/api/v1/product/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&category=${category}`;
     }

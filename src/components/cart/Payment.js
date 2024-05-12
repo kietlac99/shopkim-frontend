@@ -142,7 +142,7 @@ const Payment = ({ history }) => {
         <div className="row wrapper">
             <div className="col-10 col-lg-5">
                 <form className="shadow-lg" onSubmit={submitHandler}>
-                    <h1 className="mb-4">Thông Tin Thẻ</h1>
+                    <h3 className="mb-4">Thông Tin Thẻ</h3>
                     <div className="form-group">
                         <label htmlFor="card_num_field">Số Thẻ</label>
                         <CardNumberElement

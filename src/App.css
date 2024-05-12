@@ -1,4 +1,4 @@
-html,
+/* html,
 body {
   font-family: "Arial", sans-serif;
   width: 100%;
@@ -6,32 +6,32 @@ body {
   margin: 0px;
   padding: 0px;
   overflow-x: hidden;
-}
+} */
 
 /* Scroll Bar */
 
-::-webkit-scrollbar-track {
+/* ::-webkit-scrollbar-track {
   background-color: #f5f5f5;
-}
+} */
 
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   width: 8px;
   background-color: #f5f5f5;
-}
+} */
 
-::-webkit-scrollbar-thumb {
+/* ::-webkit-scrollbar-thumb {
   background-color: rgba(66, 66, 66, 0.2);
   border: 0px;
   background-clip: padding-box;
   border-radius: 5px;
-}
+} */
 
-nav {
+/* nav {
   background-color: #232f3e;
   padding: 1rem 1rem;
-}
+} */
 
-#search_btn {
+/* #search_btn {
   background-color: #febd69;
 }
 
@@ -64,10 +64,10 @@ nav {
   color: black;
   font-weight: bold;
   font-size: 0.9rem;
-}
+} */
 
 /* Home page */
-#products_heading {
+/* #products_heading {
   margin-top: 1.8rem;
 }
 
@@ -111,15 +111,15 @@ nav {
   font-size: 0.85rem;
   color: grey;
   margin-left: 0.5rem;
-}
+} */
 
 /* Footer */
-footer {
+/* footer {
   margin-top: 8rem;
   color: grey;
   bottom: 0;
   width: 100%;
-}
+} */
 
 /* Ratings */
 
@@ -149,7 +149,7 @@ footer {
 }
 
 /* Product Details Page */
-#product_id {
+/* #product_id {
   color: grey;
   font-size: 0.8rem;
 }
@@ -188,10 +188,10 @@ footer {
 
 #product_image {
   margin-top: 9rem;
-}
+} */
 
 /* Loader */
-.loader {
+/* .loader {
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -218,11 +218,11 @@ footer {
   100% {
     transform: rotate(360deg);
   }
-}
+} */
 
 /* Cart */
 
-.cart-item {
+/* .cart-item {
   margin: 1.8rem 0rem;
   padding: 0rem 0.7rem;
 }
@@ -289,7 +289,7 @@ footer {
 .form-control:disabled,
 .form-control[readonly] {
   background-color: white;
-}
+} */
 
 /* Login & Register */
 
@@ -329,21 +329,21 @@ footer {
   border-radius: 50%;
 }
 
-.avatar img {
+/* .avatar img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
+} */
 
 .rounded-circle {
   border-radius: 50% !important;
 }
 
-.btn.focus,
+/* .btn.focus,
 .btn:focus {
   outline: 0;
   box-shadow: none;
-}
+} */
 
 /* Header User Profile */
 
@@ -467,7 +467,7 @@ footer {
 }
 
 /* Pagination */
-.page-item.active .page-link {
+/* .page-item.active .page-link {
   background-color: #fa9c23;
   border-color: #fa9c23;
 }
@@ -478,7 +478,7 @@ footer {
 
 .page-link:hover {
   color: #fa9c23;
-}
+} */
 
 /* Admin Sidebar */
 
@@ -579,7 +579,7 @@ ul.CTAs a {
 
 /* Reviews */
 
-.rating {
+/* .rating {
   margin-top: 10rem;
 }
 
@@ -600,7 +600,7 @@ ul.CTAs a {
 
 .star:first-child {
   padding-left: 0;
-}
+} */
 
 .orange {
   color: #fa9c23;
@@ -613,6 +613,10 @@ ul.CTAs a {
 .review_user {
   font-size: 0.8rem;
   color: grey;
+}
+
+.checked {
+  color: orange;
 }
 
 .register-confirm-container {

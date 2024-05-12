@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import $ from 'jquery'
 
-const Search = ({ history }) => {
+const Search = ({ history, isAtSideBar }) => {
   const [keyword, setKeyword] = useState("");
 
   const searchHandler = (e) => {
@@ -8,19 +9,24 @@ const Search = ({ history }) => {
 
     if (keyword.trim()) {
       history.push(`/search/${keyword}`);
-    } else {
-      history.push('/');
+      $('.search-model').fadeOut(400, function () {
+        $('#search-input').val('');
+    });
+    } else { 
+      // Nếu không, thì thay đổi URL hiện tại để load tới page đó luôn
+      history.push('/search');
     }
   };
 
   return (
-    <form onSubmit={searchHandler}>
+    !isAtSideBar ? (
+    <form className="search-model-form" onSubmit={searchHandler}>
       <div className="input-group">
         <input
           type="text"
           id="search_field"
           className="form-control"
-          placeholder="Nhập tên sản phẩm ..."
+          placeholder="Nhập từ khóa ..."
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
         />
@@ -31,6 +37,13 @@ const Search = ({ history }) => {
         </div>
       </div>
     </form>
+    ) : (
+      <form onSubmit={searchHandler}>
+          <input type="text" placeholder="Tìm kiếm..." value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}/>
+          <button type="submit"><span className="icon_search"></span></button>
+      </form>
+    )
   );
 };
 

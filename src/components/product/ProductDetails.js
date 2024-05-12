@@ -1,5 +1,5 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { Carousel } from "react-bootstrap";
+import React, { Fragment, useEffect, useState} from "react";
+import { Link } from "react-router-dom";
 
 import Loader from "../layout/Loader";
 import MetaData from "../layout/MetaData";
@@ -10,12 +10,24 @@ import { getProductDetails as getProductDetailsAction, clearErrors, newReviewAct
 import { addItemToCartAction } from '../../actions/cartActions';
 import { NEW_REVIEW_RESET } from '../../constants/productConstants';
 import ListReviews from "../review/ListReviews";
+import axios from "axios";
+
+import Product from "../product/Product";
+
+import { SHOP_KIM_API } from '../../config';
 
 const ProductDetails = ({ match }) => {
 
   const [quantity, setQuantity] = useState(1);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
+  const [activeTabIndex , setActiveTabIndex ] = useState(0);
+
+  const [relatedProduct, setRelatedProduct] = useState([]);
+
+  const [showReviewForm, setShowReviewForm] = useState(false);
+
+  const [tempRating, setTempRating] = useState(0);
 
   const dispatch = useDispatch();
 
@@ -26,6 +38,43 @@ const ProductDetails = ({ match }) => {
   const alert = useAlert();
 
   const formattedPrice = product?.price?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+
+  useEffect(() => {
+    const getProductData = async () => {
+      const link = `${SHOP_KIM_API}/api/v1/product/products?category=${product.category}`;
+      try {
+        const { data } = await axios({
+          url: link,
+          method: 'GET'
+        });
+        const filteredProducts = data.payload.products.filter(
+          relatedProduct => relatedProduct._id !== product._id
+        );
+
+        setRelatedProduct(filteredProducts.slice(0, 4));
+      } catch (error) {
+        const dataError = error.response.data.errors[0].message || error.response.data.errors[0].msg;
+        alert.error(dataError);
+      }
+    }
+
+    if (product) {
+      getProductData();
+    }
+  }, [product, alert]);
+ 
+
+  const productRating = product.ratings; 
+  const productStars = [];
+  for (let i = 1; i <= 5; i++) {
+    if (productRating >= i) {
+      productStars.push(<i className="fa fa-star" key={i}></i>);
+    } else if (productRating < i && productRating > i - 1) {
+      productStars.push(<i className="fa fa-star-half-o" key={i}></i>);
+    } else {
+      productStars.push(<i className="fa fa-star-o" key={i}></i>);
+    }
+  }
 
   useEffect(() => {
     dispatch(getProductDetailsAction(match.params.id));
@@ -52,60 +101,29 @@ const ProductDetails = ({ match }) => {
   };
 
   const increaseQty = () => {
-    const count = document.querySelector('.count');
-
-    if (count.valueAsNumber >= product.stock) return;
-
-    const qty = count.valueAsNumber + 1;
-    setQuantity(qty);
+    setQuantity(prevQty => prevQty + 1);
   };
 
   const decreaseQty = () => {
-    const count = document.querySelector('.count');
-
-    if (count.valueAsNumber <= 1) return;
-
-    const qty = count.valueAsNumber - 1;
-    setQuantity(qty);
+    if (quantity > 1) {
+      setQuantity(prevQty => prevQty - 1);
+    }
   };
 
-  function setUserRatings() {
-    const stars = document.querySelectorAll('.star');
+  const handleStarClick = (value) => {
+    setRating(value);
+    setTempRating(0);
+  };
 
-    stars.forEach((star, index) => {
-      star.starValue = index + 1;
+  const handleMouseEnter = (value) => {
+    setTempRating(value); // Cập nhật giá trị tạm thời
+  };
 
-      ['click', 'mouseover', 'mouseout'].forEach(function(e) {
-        star.addEventListener(e, showRatings);
-      });
-    });
+  const handleMouseLeave = () => {
+    setRating(rating);
+    setTempRating(0)
+  };
 
-    function showRatings(e) {
-      stars.forEach((star, index) => {
-        if(e.type === 'click') {
-          if(index < this.starValue) {
-            star.classList.add('orange');
-
-            setRating(this.starValue);
-          } else {
-            star.classList.remove('orange');
-          }
-        }
-
-        if(e.type === 'mouseover') {
-          if(index < this.starValue) {
-            star.classList.add('yellow');
-          } else {
-            star.classList.remove('yellow')
-          }
-        }
-
-        if(e.type === 'mouseout') {
-          star.classList.remove('yellow')
-        }
-      })
-    }
-  }
 
   const reviewHandler = () => {
     const formData = new FormData();
@@ -124,179 +142,180 @@ const ProductDetails = ({ match }) => {
       ) : (
         <Fragment>
           <MetaData title={product.name} />
-          <div className="row f-flex justify-content-around">
-            <div className="col-12 col-lg-5 img-fluid" id="product_image">
-              <Carousel pause="hover">
-                {product.images &&
-                  product.images.map((image) => (
-                    <Carousel.Item key={image.public_id}>
-                      <img
-                        className="d-block w-100"
-                        src={image.url}
-                        alt={product.title}
-                      />
-                    </Carousel.Item>
-                  ))}
-              </Carousel>
-            </div>
 
-            <div className="col-12 col-lg-5 mt-5">
-              <h3>{product.name}</h3>
-              <p id="product_id">Sản Phẩm # {product._id}</p>
-
-              <hr />
-
-              <div className="rating-outer">
-                <div
-                  className="rating-inner"
-                  style={{
-                    width: `${(product.ratings / 5) * 100}%`,
-                  }}
-                ></div>
-              </div>
-              <span id="no_of_reviews">
-                ({product.numOfReviews} Đánh Giá)
-              </span>
-
-              <hr />
-
-              <p id="product_price">{formattedPrice}</p>
-              <div className="stockCounter d-inline">
-                <span className="btn btn-danger minus" onClick={decreaseQty}>-</span>
-
-                <input
-                  type="number"
-                  className="form-control count d-inline"
-                  value={quantity}
-                  readOnly
-                />
-
-                <span className="btn btn-primary plus" onClick={increaseQty}>+</span>
-              </div>
-              <button
-                type="button"
-                id="cart_btn"
-                className="btn btn-primary d-inline ml-4"
-                disabled={product.stock <= 0}
-                onClick={addToCart}
-              >
-                Thêm vào giỏ hàng
-              </button>
-
-              <hr />
-
-              <p>
-                Trạng thái:{" "}
-                <span
-                  id="stock_status"
-                  className={
-                    product.stock > 0 ? "greenColor" : "redColor"
-                  }
-                >
-                  {product.stock > 0
-                    ? "Còn hàng"
-                    : "Hết hàng"}
-                </span>
-              </p>
-
-              <hr />
-
-              <h4 className="mt-2">Mô tả sản phẩm:</h4>
-              <p>{product.description}</p>
-              <hr />
-              <p id="product_seller mb-3">
-                Nhà cung cấp: <strong>{product.seller}</strong>
-              </p>
-
-              {user ? <button
-                id="review_btn"
-                type="button"
-                className="btn btn-primary mt-4"
-                data-toggle="modal"
-                data-target="#ratingModal"
-                onClick={setUserRatings}
-              >
-                Đánh giá sản phẩm
-              </button>
-              :
-                <div className="alert alert-danger mt-5" type='alert'>Đăng nhập để đánh giá sản phẩm.</div>
-              }
-              
-
-              <div className="row mt-2 mb-5">
-                <div className="rating w-50">
-                  <div
-                    className="modal fade"
-                    id="ratingModal"
-                    tabIndex="-1"
-                    role="dialog"
-                    aria-labelledby="ratingModalLabel"
-                    aria-hidden="true"
-                  >
-                    <div className="modal-dialog" role="document">
-                      <div className="modal-content">
-                        <div className="modal-header">
-                          <h5 className="modal-title" id="ratingModalLabel">
-                            Đánh giá
-                          </h5>
-                          <button
-                            type="button"
-                            className="close"
-                            data-dismiss="modal"
-                            aria-label="Close"
-                          >
-                            <span aria-hidden="true">&times;</span>
-                          </button>
+          <section className="shop-details">
+        <div className="product__details__pic">
+            <div className="container">
+                <div className="row">
+                    <div className="col-lg-12">
+                        <div className="product__details__breadcrumb">
+                            <Link to="/">Trang Chủ</Link>
+                            <Link to="/search">Mua sắm</Link>
+                            <span>Chi tiết sản phẩm</span>
                         </div>
-                        <div className="modal-body">
-                          <ul className="stars">
-                            <li className="star">
-                              <i className="fa fa-star"></i>
-                            </li>
-                            <li className="star">
-                              <i className="fa fa-star"></i>
-                            </li>
-                            <li className="star">
-                              <i className="fa fa-star"></i>
-                            </li>
-                            <li className="star">
-                              <i className="fa fa-star"></i>
-                            </li>
-                            <li className="star">
-                              <i className="fa fa-star"></i>
-                            </li>
-                          </ul>
-
-                          <textarea
-                            name="review"
-                            id="review"
-                            className="form-control mt-3"
-                            value={comment}
-                            onChange={(e) => setComment(e.target.value)}
-                          >
-
-                          </textarea>
-
-                          <button
-                            className="btn my-3 float-right review-btn px-4 text-white"
-                            onClick={reviewHandler}
-                            data-dismiss="modal"
-                            aria-label="Close"
-                          >
-                            Xác nhận
-                          </button>
-                        </div>
-                      </div>
                     </div>
-                  </div>
                 </div>
+                <div className="row">
+                  <div className="col-lg-3 col-md-3">
+                      <ul className="nav nav-tabs" role="tablist">
+                          {product.images &&
+                              product.images.map((image, index) => (
+                                  <li className="nav-item" key={index}>
+                                      <a 
+                                          className={`nav-link${index === 0 ? ' active' : ''}`} 
+                                          data-toggle="tab" 
+                                          href={`#${image.public_id}`} 
+                                          role="tab"
+                                          onClick={() => setActiveTabIndex(index)} // Thêm sự kiện onClick
+                                      >
+                                          <div className="product__thumb__pic set-bg" style={{ backgroundImage: `url('${image.url}')` }}></div>
+                                      </a>
+                                  </li>
+                              ))}                           
+                      </ul>
+                  </div>
+                  <div className="col-lg-6 col-md-9">
+                      <div className="tab-content">
+                          {product.images && product.images.map((image, index) => (
+                              <div className={`tab-pane${activeTabIndex === index ? ' active' : ''}`} id={image.public_id} role="tabpanel" key={index}>
+                                  <div className="product__details__pic__item">
+                                      <img src={image.url} alt={product.title} style={{ maxWidth: "474px", maxHeight: "533px" }}/>
+                                  </div>
+                              </div>                          
+                          ))}                      
+                      </div>
+                  </div>
               </div>
             </div>
-          </div>
+        </div>
+        <div className="product__details__content">
+            <div className="container">
+                <div className="row d-flex justify-content-center">
+                    <div className="col-lg-8">
+                        <div className="product__details__text">
+                            <h4>{product.name}</h4>
+                            <div className="rating">
+                                {productStars}
+                                <span> - {product.numOfReviews} đánh giá</span>
+                            </div>
+                            <h3>
+                              {formattedPrice} 
+                              <span style={{ color: product.stock > 0 ? 'green' : 'red' }}>
+                                {product.stock > 0 ? 'Còn hàng' : 'Hết hàng'}
+                              </span>
+                            </h3>
+                            <div className="product__details__cart__option">
+                                <div className="quantity">
+                                    <div className="pro-qty">
+                                      <span className="fa fa-angle-up dec qtybtn" onClick={increaseQty}></span>
+                                        <input type="text" value={quantity} readOnly/>
+                                        <span className="fa fa-angle-down inc qtybtn" onClick={decreaseQty}></span>
+                                    </div>
+                                </div>
+                                <Link to="#" className="primary-btn" disabled={product.stock <= 0} 
+                                onClick={addToCart}>Thêm vào giỏ hàng</Link>
+                            </div>
+                            {user ? 
+                              <div className="product__details__btns__option">
+                                <Link to="#" onClick={() => setShowReviewForm(true)}><i className="fa fa-star" onClick={() => setShowReviewForm(true)}></i> Đánh giá</Link>
+                              </div> :
 
-          {product.reviews && product.reviews.length > 0 && (
-            <ListReviews reviews={product.reviews} />
-          )}
+                              <div className="product__details__btns__option">
+                                <Link to="#"><i className="fa fa-star"></i> Đăng nhập để đánh giá</Link>
+                              </div>
+                            }
+                            
+
+                            {showReviewForm && (
+                              <form onSubmit={reviewHandler} className="mt-4">
+                              <h5>Đánh giá sản phẩm</h5>
+                              <div className="form-group">
+                                  {[1, 2, 3, 4, 5].map((value) => (
+                                      <span
+                                          key={value}
+                                          className={`fa fa-star ${value <= (tempRating || rating) ? 'checked' : ''}`}
+                                          onClick={() => handleStarClick(value)}
+                                          onMouseEnter={() => handleMouseEnter(value)}
+                                          onMouseLeave={handleMouseLeave}
+                                          style={{ cursor: 'pointer', marginRight: '5px' }}
+                                      ></span>
+                                  ))}
+                              </div>
+                              <div className="form-group">
+                                  <textarea
+                                      className="form-control"
+                                      value={comment}
+                                      onChange={(e) => setComment(e.target.value)}
+                                      placeholder="Nhập nhận xét của bạn..."
+                                      style={{ minHeight: '100px', resize: 'vertical' }}
+                                  />
+                              </div>
+                              <div className="form-group text-right">
+                                  <button type="submit" className="btn btn-primary">Gửi đánh giá</button>
+                              </div>
+                            </form>
+                            )}
+
+
+                            <div className="product__details__last__option">                       
+                                <ul>
+                                    <li><span>Mã sản phẩm:</span> {product._id}</li>
+                                    <li><span>Danh mục:</span> {product.category}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-lg-12">
+                        <div className="product__details__tab">
+                            <ul className="nav nav-tabs" role="tablist">
+                                <li className="nav-item">
+                                    <a className="nav-link active" data-toggle="tab" href="#tabs-5"
+                                    role="tab">Chi tiết sản phẩm</a>
+                                </li>
+                                <li className="nav-item">
+                                    <a className="nav-link" data-toggle="tab" href="#tabs-6" role="tab">Đánh giá sản phẩm ({product?.reviews?.length})</a>
+                                </li>
+                            </ul>
+                            <div className="tab-content">
+                                <div className="tab-pane active" id="tabs-5" role="tabpanel">
+                                    <div className="product__details__tab__content">
+                                        <div className="product__details__tab__content__item">
+                                            <h5>Thông tin sản phẩm</h5>
+                                            <p>{product.description}</p>                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="tab-pane" id="tabs-6" role="tabpanel">
+                                    <div className="product__details__tab__content">
+                                    {product.reviews && product.reviews.length > 0 && (
+                                      <ListReviews reviews={product.reviews} />
+                                    )}
+                                    </div>
+                                </div>        
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section className="related spad">
+        <div className="container">
+            <div className="row">
+                <div className="col-lg-12">
+                    <h3 className="related-title">Sản phẩm liên quan</h3>
+                </div>
+            </div>
+            <div className="row">             
+            { relatedProduct.map(product => (
+                  <Product key={product._id} product={product} isShopping={false} isRelatedProduct={true} />
+            ))}
+            </div>
+        </div>
+    </section>
 
         </Fragment>
       )}

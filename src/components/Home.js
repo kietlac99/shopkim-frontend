@@ -1,20 +1,18 @@
 import React, { Fragment, useEffect, useState } from "react";
 import Pagination from 'react-js-pagination';
-import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 
 import MetaData from "./layout/MetaData";
 import Product from "./product/Product";
 import Loader from "./layout/Loader";
+import { Route, Link } from 'react-router-dom';
 
 import { getProducts as getProductsAction } from "../actions/productActions";
 import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from 'react-redux';
 
 import { formattedVND } from '../utils/formatedNumber';
-
-const { createSliderWithTooltip } = Slider;
-const Range = createSliderWithTooltip(Slider.Range);
+import Search from "./layout/Search";
 
 const Home = ({ match }) => {
 
@@ -38,7 +36,6 @@ const Home = ({ match }) => {
     if(error) {
       return alert.error(error)
     }
-
     dispatch(getProductsAction(keyword, currentPage, price, category, rating));
   }, [dispatch, alert, error, keyword, currentPage, price, category, rating]);
 
@@ -47,9 +44,14 @@ const Home = ({ match }) => {
   }
 
   let count = productsCount;
-  if(keyword) {
+  if(keyword || category) {
     count = filteredProuctsCount;
   }
+
+  const handlePriceSelect = (minPrice, maxPrice) => {
+    // Cập nhật state price thành giá trị tương ứng
+    setPrice([minPrice, maxPrice]);
+  };
 
   return (
     <Fragment>
@@ -59,106 +61,137 @@ const Home = ({ match }) => {
         <Fragment>
           <MetaData title={"Mua hàng thời trang trực tuyến tốt nhất"} />
 
-          <h1 id="products_heading">Các sản phẩm mới nhất</h1>
-
-          <section id="products" className="container mt-5">
+          <section className="product spad">
+        <div className="container">
             <div className="row">
-              {keyword ? (
+              {keyword || window.location.hash.includes('/search') ?  (
                 <Fragment>
-                  <div className="col-6 col-md-3 mt-5 mb-5">
-                    <div className="px-5">
-                      <Range
-                        marks={{
-                          1: `1`,
-                          10000000: `10.000.000`
-                        }}
-                        min={1}
-                        max={10000000}
-                        defaultValue={[1, 10000000]}
-                        tipFormatter={value => `${formattedVND(value)}`}
-                        tipProps={{
-                          placement: "top",
-                          visible: true
-                        }}
-                        value={price}
-                        onChange={price => setPrice(price)}
-                      />
-
-                      <hr className="my-5" />
-
-                      <div className="mt-5">
-                        <h4 className="mb-3">
-                          Danh mục
-                        </h4>
-
-                        <ul className="pl-0">
-                          {categories.map(category => (
-                            <li style={{cursor: 'pointer', listStyleType: 'none'}} 
-                            key={category} 
-                            onClick={() => setCategory(category)}>
-                              {category}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      <hr className="my-3" />
-
-                      <div className="mt-5">
-                        <h4 className="mb-3">
-                          Xếp hạng
-                        </h4>
-
-                        <ul className="pl-0">
-                          {[5, 4, 3, 2 , 1].map(star => (
-                            <li style={{cursor: 'pointer', listStyleType: 'none'}} 
-                            key={star} 
-                            onClick={() => setRating(star)}>
-                              <div className="rating-outer">
-                                <div className="rating-inner" style={{width: `${star * 20}%`}}>
-                                  
+                  <div className="col-lg-3">
+                    <div className="shop__sidebar">
+                        <div className="shop__sidebar__search">
+                        <Route render={({ history }) => <Search history={history} isAtSideBar={true}/>} />
+                        </div>
+                        <div className="shop__sidebar__accordion">
+                            <div className="accordion" id="accordionExample">
+                                <div className="card">
+                                    <div className="card-heading">
+                                        <Link href="#" data-toggle="collapse" data-target="#collapseOne">Danh mục</Link>
+                                    </div>
+                                    <div id="collapseOne" className="collapse show" data-parent="#accordionExample">
+                                        <div className="card-body">
+                                            <div className="shop__sidebar__categories">
+                                                <ul className="nice-scroll">
+                                                  {categories.map(category => (
+                                                    <li key={category}>
+                                                      <Link to="#"  onClick={() => setCategory(category)}>{category}</Link>                                
+                                                    </li>
+                                                  ))}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                              </div>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
 
+                                <div class="card">
+                                    <div class="card-heading">
+                                        <Link to="#" data-toggle="collapse" data-target="#collapseTwo">Xếp hạng</Link>
+                                    </div>
+                                    <div id="collapseTwo" class="collapse show" data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <div class="shop__sidebar__brand">
+                                                <ul>
+                                                  {[5, 4, 3, 2 , 1].map(star => (
+                                                    <li style={{cursor: 'pointer', listStyleType: 'none'}} 
+                                                    key={star} 
+                                                    onClick={() => setRating(star)}>
+                                                      <div className="rating-outer">
+                                                        <div className="rating-inner" style={{width: `${star * 20}%`}}>
+                                                          
+                                                        </div>
+                                                      </div>
+                                                    </li>
+                                                  ))}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div className="card">
+                                    <div className="card-heading">
+                                        <Link to="#" data-toggle="collapse" data-target="#collapseThree">Giá tiền</Link>
+                                    </div>
+                                    <div id="collapseThree" className="collapse show" data-parent="#accordionExample">
+                                        <div className="card-body">
+                                            <div className="shop__sidebar__price">
+                                                <ul>
+                                                  <li><Link to="#" onClick={() => handlePriceSelect(200000, 500000)}>{formattedVND(200000)} - {formattedVND(500000)}</Link></li>
+                                                  <li><Link to="#" onClick={() => handlePriceSelect(500000, 1000000)}>{formattedVND(500000)} - {formattedVND(1000000)}</Link></li>
+                                                  <li><Link to="#" onClick={() => handlePriceSelect(1000000, 2000000)}>{formattedVND(1000000)} - {formattedVND(2000000)}</Link></li>
+                                                  <li><Link to="#" onClick={() => handlePriceSelect(2000000, 5000000)}>{formattedVND(2000000)} - {formattedVND(5000000)}</Link></li>
+                                                  <li><Link to="#" onClick={() => handlePriceSelect(5000000, 10000000)}>{formattedVND(5000000)} - {formattedVND(10000000)}</Link></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                                                                            
+                            </div>
+                        </div>
                     </div>
-                  </div>
-
-                  <div className="col-6 col-md-9">
+                </div>
+                <div className="col-lg-9">
+                    <div className="shop__product__option">
+                        <div className="row">
+                            <div className="col-lg-6 col-md-6 col-sm-6">
+                                <div className="shop__product__option__left">
+                                    <p>Danh mục:{category},Từ khóa:{keyword},Đánh giá:{rating} sao</p>
+                                </div>
+                            </div>
+                            <div className="col-lg-6 col-md-6 col-sm-6">
+                                <div className="shop__product__option__right">
+                                    <p>Tiền: {formattedVND(price[0])}-{formattedVND(price[1])}</p>                                 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="row">                                                                                           
+                      { products.map(product => (
+                          <Product key={product._id} product={product} isShopping={true} />
+                      ))}
+                    </div>
+                    {resPerPage <= count && (
                       <div className="row">
-                        {products.map(product => (
-                          <Product key={product._id} product={product} col={4} />
-                        ))}
+                          <div className="col-lg-12">
+                              <div className="product__pagination">
+                                <Pagination
+                                  activePage={currentPage}
+                                  itemsCountPerPage={resPerPage}
+                                  totalItemsCount={productsCount}
+                                  onChange={setCurrentPageNo}
+                                />
+                              </div>
+                          </div>
                       </div>
-                  </div>
+                    )}
+                </div>
                 </Fragment>
               ) : (
-                products.map(product => (
-                  <Product key={product._id} product={product} col={3} />
-                ))
-              )}
-            </div>
-          </section>
-
-          {resPerPage <= count && (
-            <div className="d-flex justify-content-center mt-5">
-              <Pagination
-                activePage={currentPage}
-                itemsCountPerPage={resPerPage}
-                totalItemsCount={productsCount}
-                onChange={setCurrentPageNo}
-                nextPageText={"Tiếp"}
-                prevPageText={"Trước"}
-                firstPageText={"Đầu"}
-                lastPageText={"Cuối"}
-                itemClass="page-item"
-                linkClass="page-link"
-              />
-            </div>
-          )}
+                <Fragment>
+                <div className="col-lg-12">
+                  <ul className="filter__controls">
+                      <li className="active" data-filter="*">Các sản phẩm mới nhất</li>
+                  </ul>
+                </div>
+                  <div className="row product__filter">
+                  { products.map(product => (
+                        <Product key={product._id} product={product} isShopping={false} />
+                  ))}
+                </div>
+              </Fragment>
+            )}       
+            </div>        
+        </div>
+    </section>
         </Fragment>
       )}
     </Fragment>
