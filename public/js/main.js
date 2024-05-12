@@ -33,6 +33,10 @@ jQuery(function ($) {
             var bg = $(this).data('setbg');
             $(this).css('background-image', 'url(' + bg + ')');
         });
+
+        $('.search-switch').on('click', function () {
+            $('.search-model').fadeIn(400);
+        });
     });
 
     /*------------------
@@ -40,9 +44,7 @@ jQuery(function ($) {
     --------------------*/
     
     //Search Switch
-    $('.search-switch').on('click', function () {
-        $('.search-model').fadeIn(400);
-    });
+
 
     $('.search-close-switch').on('click', function () {
         $('.search-model').fadeOut(400, function () {
