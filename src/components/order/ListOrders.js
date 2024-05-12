@@ -80,7 +80,7 @@ const ListOrders = () => {
 
         <MetaData title={'My Orders'} />
 
-        <h1 className='my-5'>Đơn Hàng Của Tôi</h1>
+        <h2 className='my-5'>Đơn Hàng Của Tôi</h2>
 
         {loading ? <Loader /> : (
             <MDBDataTable 

@@ -42,7 +42,7 @@ const OrderDetails = ({ match }) => {
                 <div className="row d-flex justify-content-between">
                     <div className="col-12 col-lg-8 mt-5 order-details">
 
-                        <h1 className="my-5">Đơn Hàng # {order._id}</h1>
+                        <h3 className="my-5" style={{ whiteSpace: "nowrap" }}>Đơn Hàng # {order._id}</h3>
 
                         <h4 className="mb-4">Thông Tin Vận Chuyển</h4>
                         <p><b>Tên:</b> {user && user.name}</p>
