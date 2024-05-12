@@ -72,7 +72,7 @@ const UpdateUser = ({ history, match }) => {
                 <div className="row wrapper">
                     <div className="col-10 col-lg-5">
                         <form className="shadow-lg" onSubmit={submitHandler}>
-                            <h1 className="mt-2 mb-5">Cập Nhật Người Dùng</h1>
+                            <h3 className="mt-2 mb-5" style={{ whiteSpace: "nowrap" }}>Cập Nhật Người Dùng</h3>
 
                             <div className="form-group">
                                 <label htmlFor="name_field">Tên</label>

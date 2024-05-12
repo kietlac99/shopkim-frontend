@@ -117,7 +117,7 @@ const UsersList = ({ history }) => {
 
             <div className='col-12 col-md-10'>
                 <Fragment>
-                    <h1 className='my-5'>Tất Cả Người Dùng</h1>
+                    <h2 className='my-5'>Tất Cả Người Dùng</h2>
 
                     {loading ? <Loader /> : (
                         <MDBDataTable 

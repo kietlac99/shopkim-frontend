@@ -93,7 +93,7 @@ const NewProduct = ({ history }) => {
                 <Fragment>
                     <div className="wrapper my-5"> 
                         <form className="shadow-lg" onSubmit={submitHandler} encType='multipart/form-data'>
-                            <h1 className="mb-4">Thêm Sản Phẩm Mới</h1>
+                            <h2 className="mb-4">Thêm Sản Phẩm Mới</h2>
 
                             <div className="form-group">
                                 <label htmlFor="name_field">Tên Sản Phẩm</label>

@@ -96,7 +96,7 @@ const Dashboard = () => {
             </div>
 
             <div className="col-12 col-md-10">
-                <h1 className="my-4">Thống kê</h1>
+                <h2 className="my-4">Thống kê</h2>
 
                 {loading ? <Loader /> : (
                     <Fragment>

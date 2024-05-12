@@ -118,7 +118,7 @@ const DeletedReviews = ({ history }) => {
 
             <div className='col-12 col-md-10'>
                 <Fragment>
-                    <h1 className='my-5'>Đánh Giá Trong Thùng Rác</h1>
+                    <h2 className='my-5'>Đánh Giá Trong Thùng Rác</h2>
 
                     {loading ? <Loader /> : (
                         <MDBDataTable 
