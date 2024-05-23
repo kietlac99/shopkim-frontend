@@ -5,7 +5,6 @@ const Product = ({ product, isShopping, isRelatedProduct = false }) => {
 
   const formattedPrice = product.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
   const imageUrl = product.images[0].url;
-  console.log(imageUrl);
 
   const rating = product.ratings; // Điểm đánh giá của sản phẩm (ví dụ: 4.75 hoặc 4.5)
 
