@@ -1937,7 +1937,9 @@ ol {
 -----------------------*/
 
 .footer {
+	position: relative;
 	margin-top: 8rem;
+	left: 0;
   bottom: 0;
   width: 100%;
   background: #111111;

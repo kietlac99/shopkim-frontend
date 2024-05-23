@@ -84,7 +84,7 @@ function App() {
       <div className="App">
         <Header />
         
-        <div className="container container-fluid">
+        <div className="container container-fluid" style={{ minHeight: 'calc(100vh - 106px)' }}>
           <Route path="/" component={Home} exact />
           <Route path="/search" component={Home} exact/>
           <Route path="/search/:keyword" component={Home} />
