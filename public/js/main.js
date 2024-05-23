@@ -30,8 +30,11 @@ jQuery(function ($) {
             var mixer = mixitup(containerEl);
         }
         $('.set-bg').each(function () {
-            var bg = $(this).data('setbg');
-            $(this).css('background-image', 'url(' + bg + ')');
+            var $element = $(this);
+            var bg = $element.data('setbg');
+            if (bg) {
+                $element.css('background-image', 'url(' + bg + ')');
+            }
         });
 
         $('.search-switch').on('click', function () {

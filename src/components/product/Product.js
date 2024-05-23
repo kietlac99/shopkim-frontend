@@ -23,7 +23,7 @@ const Product = ({ product, isShopping, isRelatedProduct = false }) => {
   const productItem = (
     <div className="product__item">
       <Link to={`/product/${product._id}`}>
-        <div className="product__item__pic" style={{ backgroundImage: `url('${imageUrl}')` }}>
+        <div className="product__item__pic set-bg" style={{ backgroundImage: `url('${imageUrl}')` }}>
             <ul className="product__hover">
                 <li><Link to={`/product/${product._id}`}><img src="img/icon/search.png" alt=""/></Link></li>
             </ul>
